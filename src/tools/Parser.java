@@ -58,7 +58,7 @@ public class Parser {
 				w = Integer.parseInt(split[i].charAt(2)+"");
 			}
 		}
-		Config.list.add(new Composant(nb,w));
+		Config.list.add(new Composant(w,nb));
 		
 	}
 	
