@@ -2,17 +2,18 @@ package luncher;
 
 import struct.Node;
 import tools.Config;
+import tools.Generator;
 import tools.Parser;
 
 public class Main {
 
 	public static void main(String args[]){
-	//	Parser.readFile("binary.spec");
+		Parser.readFile("binary.spec");
+		System.out.println(Config.list.toString());
+		Generator.gen();
 		
 		
-		//System.out.println(Config.list.toString());
-		
-		
+	/*	
 		
 		Node f = new Node("a",1);
 		Node f2 = new Node("b",1);
@@ -38,7 +39,7 @@ public class Main {
 		dot+=f.toDot();
 		dot+="\n }";
 		System.out.println(dot);
-		
+		*/
 		
 	}
 	
