@@ -1,6 +1,6 @@
 package luncher;
 
-import struct.Node;
+import struct.Node2;
 import tools.Config;
 import tools.Generator;
 import tools.Parser;
@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String args[]){
 		Parser.readFile("binary.spec");
-		//System.out.println(Config.list.toString());
+		System.out.println(Config.hash.toString());
 		//Generator.gen();
 		
 		
