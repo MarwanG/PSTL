@@ -8,12 +8,13 @@ public class Node {
 	int weight;
 	String label;
 	ArrayList<Node> fils;
-	ArrayList<String> filsTypes;
+	//ArrayList<String> filsTypes;
 	
 	
 	public Node(String type,int weight){
 		this.type = type;
 		this.weight = weight;
+		fils = new ArrayList<Node>();
 	}
 
 
@@ -52,19 +53,78 @@ public class Node {
 	}
 
 
+	public void addFils(Node n){
+		this.fils.add(n);
+		this.weight = this.weight + n.getWeight();
+	}
+
+	
+	
+
 	public void setFils(ArrayList<Node> fils) {
 		this.fils = fils;
 	}
 
 
-	public ArrayList<String> getFilsTypes() {
-		return filsTypes;
-	}
+	//public ArrayList<String> getFilsTypes() {
+		//return filsTypes;
+	//}
 
 
-	public void setFilsTypes(ArrayList<String> filsTypes) {
+	/*public void setFilsTypes(ArrayList<String> filsTypes) {
 		this.filsTypes = filsTypes;
+	}*/
+
+	
+	@SuppressWarnings("unchecked")
+	public static Node clone(Node n){
+		if(n instanceof Node){
+			Node res  = new Node(n.getLabel(),n.getWeight());
+			res.setType(n.getType());
+			res.setFils((ArrayList<Node>) n.getFils().clone());
+			return res;
+		}else{
+			return null;
+		}
 	}
+	
+	
+	public ArrayList<Node> AddLevel(Node base){
+		ArrayList<Node> list = new ArrayList<Node>();
+		for(int i = 0 ; i < fils.size() ; i++){
+			if(fils.get(i).getFils().size() == 0){
+				Node tmp =  Node.clone(this);
+				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
+				tmp.getFils().set(i, base);
+				list.add(tmp);
+			}else{
+				list.addAll(fils.get(i).AddLevel(base));
+			}
+		}
+		return list;
+	}
+
+	
+
+
+	@Override
+	public String toString() {
+		return "Node [type=" + type + ", weight=" + weight + ", label=" + label
+				+ ", fils=" + fils + "]";
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Node){
+			Node tmp = (Node) obj;
+			return ((this.type.equals(tmp.getType())&&(this.weight == tmp.getWeight())&&(this.fils.equals(tmp.getFils()))));
+		}else{
+			return false;
+		}
+	}
+	
+	
 	
 	
 	

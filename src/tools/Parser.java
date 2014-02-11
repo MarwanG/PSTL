@@ -43,7 +43,7 @@ public class Parser {
 	private static void parseLine(String l){
 		String obj;
 		if(l.contains("::=")){
-			obj = l.substring(0, l.indexOf("::="));
+			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
 			Config.labels.add(obj);
 			Config.hash.put(obj, new ArrayList<Composant>());
 			l = l.substring(l.indexOf("::=")+4);
@@ -67,7 +67,7 @@ public class Parser {
 			if(split[i].contains("<")){
 				w = Integer.parseInt(split[i].charAt(2)+"");
 			}else{
-				labels.add(split[i]);
+				labels.add(split[i].replace(" ", ""));
 			}
 		}
 		Composant c = new Composant(w,nb,labels);

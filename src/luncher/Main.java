@@ -9,8 +9,11 @@ public class Main {
 
 	public static void main(String args[]){
 		Parser.readFile("binary.spec");
-		System.out.println(Config.hash.toString());
-		//Generator.gen();
+		//System.out.println(Config.hash.toString());
+		Generator.gen();
+		System.out.println(Generator.constructers.toString());
+		//Generator.generation();
+		//System.out.println(Generator.mainList.toString());
 		
 		
 	/*	
