@@ -37,27 +37,35 @@ public class Generator {
 				}
 			}
 		}
+		
+		
+		System.out.println("terminaux :==");
+		System.out.println(terminaux.toString());
+		System.out.println("======");
+		
+		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
-			for(int j = 0 ; j < list.size() ; j++){
-				Composant c = list.get(j);
-				Node tmp = new Node(Config.labels.get(i), c.getWeight());
-				ArrayList<Node> listNode = new ArrayList<Node>();
-				listNode.add(tmp);
-				for(int z = 0 ; z < c.getList().size() ; z++){
-					for(int x = 0 ; x < listNode.size() ; x++){
-						for(int y = 0 ; y < terminaux.size() ; y++){
-							Node terminal = terminaux.get(y);
-							if(c.getList().get(z).equals(terminal.getType())){
-								tmp.addFils(Node.clone(terminal));
-							}else{
-								//appel le fonction qui retour un liste et apres parcours le liste clone et ajoute le fils et ajoute au list.
+			for(int y = 0 ; y < terminaux.size() ; y++){
+				Node terminal = terminaux.get(y);	
+				for(int j = 0 ; j < list.size() ; j++){
+					Composant c = list.get(j);
+					Node tmp = new Node(Config.labels.get(i), c.getWeight());
+					ArrayList<Node> listNode = new ArrayList<Node>();
+					listNode.add(tmp);
+					for(int z = 0 ; z < c.getList().size() ; z++){
+						for(int x = 0 ; x < listNode.size() ; x++){
+								if(c.getList().get(z).equals(terminal.getType())){
+									tmp.addFils(Node.clone(terminal));
+								}else{
+									//appel le fonction qui retour un liste et apres parcours le liste clone et ajoute le fils et ajoute au list.
+								}
 							}
-						}
-					}					
-				}
-				constructers.addAll(listNode);
-				mainList.addAll(listNode);
+						}	
+
+					constructers.addAll(listNode);
+					mainList.addAll(listNode);
+					}
 			}
 		}
 		
