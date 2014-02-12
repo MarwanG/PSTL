@@ -125,6 +125,16 @@ public class Node {
 	}
 	
 	
+	public String toDot(){
+		StringBuffer sb = new StringBuffer();
+
+		for(int i = 0 ; i < fils.size() ; i++){
+			sb.append(label + "->" + fils.get(i).getLabel() + "; \n");
+			sb.append(fils.get(i).toDot());
+		}		
+		return sb.toString();
+	}
+	
 	
 	
 	
