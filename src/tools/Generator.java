@@ -2,34 +2,116 @@ package tools;
 
 import java.util.ArrayList;
 
+import struct.Composant;
 import struct.Node;
+import struct.Node2;
 
 public class Generator {
 
-	public static Node base;
+	public static Node terminal;
+	
+	public static ArrayList<Node> terminaux = new ArrayList<Node>();
+	
+	
+	public static ArrayList<Node> constructers = new ArrayList<Node>();
 	public static ArrayList<Node> mainList = new ArrayList<Node>();
 	public static ArrayList<Node> list = new ArrayList<Node>();
 	
 	
 	public static void gen() {
-		for(int i = 0 ; i < Config.list.size() ; i++){
-			if(Config.list.get(i).getNbSons() == 0){
-				base = new Node("0",Config.list.get(i).getWeight(),0);
+		for(int i = 0 ; i < Config.labels.size() ; i++){
+			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
+			for(int j = 0 ; j < list.size() ;j++){
+				Composant c = list.get(j);
+				System.out.println(c.toString());
+				int nbFils = 0;
+				for(int z = 0 ; z < c.getList().size() ; z++){
+					if(Config.labels.contains(c.getList().get(i))){
+						nbFils++;
+					}
+				}
+				if(nbFils == 0){		//considers only the first one met.
+					terminal = new Node(Config.labels.get(i),c.getWeight());
+					terminaux.add(terminal);
+				}
 			}
 		}
 		
-		for(int i = 0 ; i < Config.list.size() ; i++){
-			if(Config.list.get(i).getNbSons() > 0){
-				Node n = new Node("1",Config.list.get(i).getWeight(),Config.list.get(i).getNbSons());
-				n.AddSons(Config.list.get(i).getNbSons(),base);
-				mainList.add(n);
+		
+		System.out.println("terminaux :==");
+		System.out.println(terminaux.toString());
+		System.out.println("======");
+		
+		
+		for(int i = 0 ; i < Config.labels.size() ; i++){
+			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
+			for(int j = 0 ; j < list.size() ; j++){
+				Composant c = list.get(j);
+				generateConstructers(c,Config.labels.get(i));
+			}			
+		}
+		//		constructers.addAll(listNode);
+			//	mainList.addAll(listNode);
+			}
+		//}
+		
+	//}
+	
+	
+	private static void generateConstructers(Composant c,String type){
+		ArrayList<Node> list = new ArrayList<Node>();
+		ArrayList<String> sons = c.getList();
+		ArrayList<String> tmp = new ArrayList<String>();
+		String son = sons.get(0);
+		ArrayList<Node> finalList = new ArrayList<Node>();
+		for(int i = 0 ; i < terminaux.size() ; i++){
+			if(terminaux.get(i).getType().equals(son)){
+				Node n = new Node(type,c.getWeight());
+				n.addFils(Node.clone(terminaux.get(i)));
 				list.add(n);
 			}
 		}
-		//System.out.println(mainList.toString());
-		
-		mainList.addAll(list.get(0).AddLevel(list.get(0)));
-		
-		System.out.println(mainList.toString());
+		for(int j = 1 ; j < sons.size() ; j++){
+			son = sons.get(j);
+			int taille = list.size();
+			for(int i = 0 ; i < taille ; i++){
+				Node n = list.get(i);
+				for(int z = 0 ; z < terminaux.size() ; z++){
+					if(terminaux.get(z).getType().equals(son)){
+						Node n2 = Node.clone(n);
+						n2.addFils(Node.clone(terminaux.get(z)));
+						if(j == sons.size()-1){
+							constructers.add(n2);
+							mainList.add(n2);
+						}else{
+							list.add(n2);
+						}
+						
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	public static void generation(){
+		int taille = mainList.size();
+		for(int i = 0 ; i < taille ; i++){
+			System.out.println(i);
+			Node tmp = mainList.get(i);
+			for(int j = 0 ; j < tmp.getFils().size() ; j++){
+				for(int z = 0 ; z < constructers.size() ; z++)
+					addList(tmp.AddLevel(constructers.get(z)));
+			}
+		}
+	}
+	
+	private static void addList(ArrayList<Node> list){
+		for(int i = 0 ; i < list.size() ;i++){
+			if(!mainList.contains(list.get(i))){
+				mainList.add(list.get(i));
+			}
+		}
 	}
 }
