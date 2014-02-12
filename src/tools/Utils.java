@@ -10,6 +10,7 @@ import struct.Node;
 		
 		public static String ArbreToDot(Node n,String graphName){
 			Node labeled = labelNode(n,0);	
+			System.out.println(labeled.toString());
 			String res = null;
 			res = "digraph " +graphName+ "{  \n";
 			res += labeled.toDot();
@@ -50,6 +51,8 @@ import struct.Node;
 			while(!stack.isEmpty()){
 				Node tmp = stack.pop();
 				tmp.setLabel(j+"");
+				System.out.println("Label = " + tmp.getLabel() + " weight = " + tmp.getWeight());
+				
 				for(int i = 0 ; i < tmp.getFils().size() ; i++){
 					stack.add(tmp.getFils().get(i));
 				}
