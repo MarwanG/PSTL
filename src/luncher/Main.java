@@ -12,8 +12,8 @@ public class Main {
 		//System.out.println(Config.hash.toString());
 		Generator.gen();
 		System.out.println(Generator.constructers.toString());
-		//Generator.generation();
-		//System.out.println(Generator.mainList.toString());
+		Generator.generation();
+		System.out.println(Generator.mainList.toString());
 		
 		
 	/*	

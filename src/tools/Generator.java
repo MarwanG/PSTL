@@ -33,7 +33,6 @@ public class Generator {
 				if(nbFils == 0){		//considers only the first one met.
 					terminal = new Node(Config.labels.get(i),c.getWeight());
 					terminaux.add(terminal);
-					//Config.hash.get(Config.labels.get(i)).remove(c);
 				}
 			}
 		}
@@ -46,30 +45,55 @@ public class Generator {
 		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
-			for(int y = 0 ; y < terminaux.size() ; y++){
-				Node terminal = terminaux.get(y);	
-				for(int j = 0 ; j < list.size() ; j++){
-					Composant c = list.get(j);
-					Node tmp = new Node(Config.labels.get(i), c.getWeight());
-					ArrayList<Node> listNode = new ArrayList<Node>();
-					listNode.add(tmp);
-					for(int z = 0 ; z < c.getList().size() ; z++){
-						for(int x = 0 ; x < listNode.size() ; x++){
-								if(c.getList().get(z).equals(terminal.getType())){
-									tmp.addFils(Node.clone(terminal));
-								}else{
-									//appel le fonction qui retour un liste et apres parcours le liste clone et ajoute le fils et ajoute au list.
-								}
-							}
-						}	
-
-					constructers.addAll(listNode);
-					mainList.addAll(listNode);
-					}
+			for(int j = 0 ; j < list.size() ; j++){
+				Composant c = list.get(j);
+				generateConstructers(c,Config.labels.get(i));
+			}			
+		}
+		//		constructers.addAll(listNode);
+			//	mainList.addAll(listNode);
+			}
+		//}
+		
+	//}
+	
+	
+	private static void generateConstructers(Composant c,String type){
+		ArrayList<Node> list = new ArrayList<Node>();
+		ArrayList<String> sons = c.getList();
+		ArrayList<String> tmp = new ArrayList<String>();
+		String son = sons.get(0);
+		ArrayList<Node> finalList = new ArrayList<Node>();
+		for(int i = 0 ; i < terminaux.size() ; i++){
+			if(terminaux.get(i).getType().equals(son)){
+				Node n = new Node(type,c.getWeight());
+				n.addFils(Node.clone(terminaux.get(i)));
+				list.add(n);
 			}
 		}
-		
+		for(int j = 1 ; j < sons.size() ; j++){
+			son = sons.get(j);
+			int taille = list.size();
+			for(int i = 0 ; i < taille ; i++){
+				Node n = list.get(i);
+				for(int z = 0 ; z < terminaux.size() ; z++){
+					if(terminaux.get(z).getType().equals(son)){
+						Node n2 = Node.clone(n);
+						n2.addFils(Node.clone(terminaux.get(z)));
+						if(j == sons.size()-1){
+							constructers.add(n2);
+							mainList.add(n2);
+						}else{
+							list.add(n2);
+						}
+						
+					}
+				}
+			}
+		}
 	}
+	
+	
 	
 	public static void generation(){
 		int taille = mainList.size();
