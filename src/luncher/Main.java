@@ -1,5 +1,7 @@
 package luncher;
 
+import com.beust.jcommander.JCommander;
+
 import struct.Node2;
 import tools.Config;
 import tools.Generator;
@@ -8,42 +10,17 @@ import tools.Parser;
 public class Main {
 
 	public static void main(String args[]){
-		Parser.readFile("binary.spec");
-		//System.out.println(Config.hash.toString());
+		
+
+		JCommander cmd = new JCommander(new Config(),args);
+		
+		
+		Parser.readFile(Config.file);
+		
 		Generator.gen();
-		System.out.println(Generator.constructers.toString());
-		Generator.generation();
+		Generator.generation(Config.size);
 		System.out.println(Generator.mainList.toString());
-		
-		
-	/*	
-		
-		Node f = new Node("a",1);
-		Node f2 = new Node("b",1);
-		Node l1 = new Node("c",1);
-		
-		Node l2 = new Node("d",1);
-		Node l3 = new Node("e",1);
-		
-		Node l4 = new Node("w",1);
-		Node l5 = new Node("p",1);
-		
-		f2.addSon(l2);
-		f2.addSon(l3);
-		
-		f.addSon(f2);
-		f.addSon(l1);
-		
-		l1.addSon(l4);
-		l1.addSon(l5);
-		
-		
-		String dot = "digraph graphname { \n";
-		dot+=f.toDot();
-		dot+="\n }";
-		System.out.println(dot);
-		*/
-		
+
 	}
 	
 }

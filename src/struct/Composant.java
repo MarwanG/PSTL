@@ -50,8 +50,7 @@ public class Composant {
 
 	@Override
 	public String toString() {
-		return "Composant [weight=" + weight + ", nbSons=" + nbSons + ", list="
-				+ list + "]";
+		return "Composant [weight=" + weight + ", Label= " + list +"]"; 
 	}
 
 	
