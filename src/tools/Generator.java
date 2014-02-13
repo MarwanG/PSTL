@@ -12,6 +12,7 @@ public class Generator {
 	
 	public static ArrayList<Node> terminaux = new ArrayList<Node>();
 	
+	public static ArrayList<Node> [] table;
 	
 	public static ArrayList<Node> constructers = new ArrayList<Node>();
 	public static ArrayList<Node> mainList = new ArrayList<Node>();
@@ -23,7 +24,6 @@ public class Generator {
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
 			for(int j = 0 ; j < list.size() ;j++){
 				Composant c = list.get(j);
-				System.out.println(c.toString());
 				int nbFils = 0;
 				for(int z = 0 ; z < c.getList().size() ; z++){
 					if(Config.labels.contains(c.getList().get(i))){
@@ -36,13 +36,6 @@ public class Generator {
 				}
 			}
 		}
-		
-		
-		System.out.println("terminaux :==");
-		System.out.println(terminaux.toString());
-		System.out.println("======");
-		
-		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
 			for(int j = 0 ; j < list.size() ; j++){
@@ -50,20 +43,13 @@ public class Generator {
 				generateConstructers(c,Config.labels.get(i));
 			}			
 		}
-		//		constructers.addAll(listNode);
-			//	mainList.addAll(listNode);
-			}
-		//}
-		
-	//}
+	}
 	
 	
 	private static void generateConstructers(Composant c,String type){
 		ArrayList<Node> list = new ArrayList<Node>();
 		ArrayList<String> sons = c.getList();
-		ArrayList<String> tmp = new ArrayList<String>();
 		String son = sons.get(0);
-		ArrayList<Node> finalList = new ArrayList<Node>();
 		for(int i = 0 ; i < terminaux.size() ; i++){
 			if(terminaux.get(i).getType().equals(son)){
 				Node n = new Node(type,c.getWeight());
@@ -98,7 +84,6 @@ public class Generator {
 	public static void generation(){
 		int taille = mainList.size();
 		for(int i = 0 ; i < taille ; i++){
-			System.out.println(i);
 			Node tmp = mainList.get(i);
 			for(int j = 0 ; j < tmp.getFils().size() ; j++){
 				for(int z = 0 ; z < constructers.size() ; z++)
