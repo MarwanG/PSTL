@@ -51,8 +51,6 @@ public class Parser {
 			for(int i = 0 ; i < split.length ; i++){
 				createComposant(split[i],obj);
 			}
-		}else{
-			System.out.println("not yet");
 		}
 	}
 

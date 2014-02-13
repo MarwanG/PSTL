@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 import struct.Composant;
 import struct.Node;
-import struct.Node2;
+
 
 public class Generator {
 
-	public static Node terminal;
-	
-	public static ArrayList<Node> terminaux = new ArrayList<Node>();
+	public static ArrayList<Node> leaf = new ArrayList<Node>();
 	
 	public static ArrayList<Node> [] table;
 	
@@ -20,10 +18,20 @@ public class Generator {
 	
 	
 	public static void gen() {
+		
+		if(Config.verbose >= 2 )
+			System.out.println("Generating possible composants");
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
+			if(Config.verbose >= 1){
+				System.out.println("List of Composants :");
+			}
 			for(int j = 0 ; j < list.size() ;j++){
 				Composant c = list.get(j);
+
+				if(Config.verbose >= 1){
+					System.out.println(c.toString());
+				}
 				int nbFils = 0;
 				for(int z = 0 ; z < c.getList().size() ; z++){
 					if(Config.labels.contains(c.getList().get(i))){
@@ -31,11 +39,18 @@ public class Generator {
 					}
 				}
 				if(nbFils == 0){		//considers only the first one met.
-					terminal = new Node(Config.labels.get(i),c.getWeight());
-					terminaux.add(terminal);
+					leaf.add(new Node(Config.labels.get(i),c.getWeight()));
 				}
 			}
 		}
+
+		if(Config.verbose >= 2 )
+			System.out.println("DONE");
+		
+	
+		if(Config.verbose >= 2 )
+			System.out.print("Generating possible Constructors");
+		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
 			for(int j = 0 ; j < list.size() ; j++){
@@ -43,6 +58,8 @@ public class Generator {
 				generateConstructers(c,Config.labels.get(i));
 			}			
 		}
+		if(Config.verbose >= 2 )
+			System.out.println("\t OK");
 	}
 	
 	
@@ -50,10 +67,11 @@ public class Generator {
 		ArrayList<Node> list = new ArrayList<Node>();
 		ArrayList<String> sons = c.getList();
 		String son = sons.get(0);
-		for(int i = 0 ; i < terminaux.size() ; i++){
-			if(terminaux.get(i).getType().equals(son)){
+
+		for(int i = 0 ; i < leaf.size() ; i++){
+			if(leaf.get(i).getType().equals(son)){
 				Node n = new Node(type,c.getWeight());
-				n.addFils(Node.clone(terminaux.get(i)));
+				n.addFils(Node.clone(leaf.get(i)));
 				list.add(n);
 			}
 		}
@@ -62,10 +80,10 @@ public class Generator {
 			int taille = list.size();
 			for(int i = 0 ; i < taille ; i++){
 				Node n = list.get(i);
-				for(int z = 0 ; z < terminaux.size() ; z++){
-					if(terminaux.get(z).getType().equals(son)){
+				for(int z = 0 ; z < leaf.size() ; z++){
+					if(leaf.get(z).getType().equals(son)){
 						Node n2 = Node.clone(n);
-						n2.addFils(Node.clone(terminaux.get(z)));
+						n2.addFils(Node.clone(leaf.get(z)));
 						if(j == sons.size()-1){
 							constructers.add(n2);
 							mainList.add(n2);
@@ -81,15 +99,19 @@ public class Generator {
 	
 	
 	
-	public static void generation(){
+	public static void generation(int g){
 		int taille = mainList.size();
-		for(int i = 0 ; i < taille ; i++){
-			Node tmp = mainList.get(i);
-			for(int j = 0 ; j < tmp.getFils().size() ; j++){
-				for(int z = 0 ; z < constructers.size() ; z++)
-					addList(tmp.AddLevel(constructers.get(z)));
+
+		for(int x = 0 ; x < g ; x++)
+			if(Config.verbose >= 2 )
+				System.out.println("Generation #"+x);
+			for(int i = 0 ; i < taille ; i++){
+				Node tmp = mainList.get(i);
+				for(int j = 0 ; j < tmp.getFils().size() ; j++){
+					for(int z = 0 ; z < constructers.size() ; z++)
+						addList(tmp.AddLevel(constructers.get(z)));
+				}
 			}
-		}
 	}
 	
 	private static void addList(ArrayList<Node> list){
