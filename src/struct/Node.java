@@ -17,6 +17,13 @@ public class Node {
 		fils = new ArrayList<Node>();
 	}
 
+	
+	public Node(Node n){
+		this.type = n.getType();
+		this.weight = n.getWeight();
+		this.fils = new ArrayList<Node>();
+
+	}
 
 	public String getType() {
 		return type;
@@ -58,9 +65,6 @@ public class Node {
 		this.weight = this.weight + n.getWeight();
 	}
 
-	
-	
-
 	public void setFils(ArrayList<Node> fils) {
 		this.fils = fils;
 	}
@@ -81,7 +85,9 @@ public class Node {
 		if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());
 			res.setType(n.getType());
-			res.setFils((ArrayList<Node>) n.getFils().clone());
+			for(int i = 0 ; i < n.getFils().size() ; i++){
+				res.getFils().add(Node.clone(n.getFils().get(i)));
+			}
 			return res;
 		}else{
 			return null;
@@ -112,6 +118,11 @@ public class Node {
 		return "Node [type=" + type + ", weight=" + weight + ", label=" + label
 				+ ", fils=" + fils + "]";
 	}
+	
+	
+	public String shortString(){
+		return "Node [type=" + type + ", weight=" + weight + ", label=" + label+"]";
+	}
 
 
 	@Override
@@ -127,15 +138,22 @@ public class Node {
 	
 	public String toDot(){
 		StringBuffer sb = new StringBuffer();
-
 		for(int i = 0 ; i < fils.size() ; i++){
-			System.out.println("i = " + i + " arbre = " + fils.get(i).getLabel());
 			sb.append(label + "->" + fils.get(i).getLabel() + "; \n");
-			sb.append(fils.get(i).toDot());
+			sb.append(fils.get(i).toDotTmp());
 		}		
 		return sb.toString();
 	}
 	
+	private String toDotTmp(){
+		StringBuffer sb = new StringBuffer();
+
+		for(int i = 0 ; i < fils.size() ; i++){
+			sb.append(label + "->" + fils.get(i).getLabel() + "; \n");
+			sb.append(fils.get(i).toDotTmp());
+		}		
+		return sb.toString();
+	}
 	
 	
 	

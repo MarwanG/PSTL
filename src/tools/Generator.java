@@ -12,6 +12,7 @@ public class Generator {
 	
 	public static ArrayList<Node> terminaux = new ArrayList<Node>();
 	
+	public static ArrayList<Node> [] table;
 	
 	public static ArrayList<Node> constructers = new ArrayList<Node>();
 	public static ArrayList<Node> mainList = new ArrayList<Node>();
