@@ -4,7 +4,7 @@
   </description>
 
 
-  <property name="src" location="src/>
+  <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="jcommander" location="/lib"/>
 
@@ -20,4 +20,11 @@
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
     <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" classpath="${jcommander}/jcommander-1.19.jar"/>
+  </target>
+
+
+<target name="run" depends="compile"
+          description="run examples">
+    <echo>================ The Main ================</echo>
+    <java classname="luncher.Main" classpath="${jcommander}/jcommander-1.19.jar:${build}"/>
   </target>
