@@ -28,3 +28,5 @@
     <echo>================ The Main ================</echo>
     <java classname="luncher.Main" classpath="${jcommander}/jcommander-1.19.jar:${build}"/>
   </target>
+
+<project>
