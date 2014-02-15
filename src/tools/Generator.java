@@ -55,10 +55,10 @@ public class Generator {
 		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
-			for(int j = 0 ; j < list.size() ; j++){
-				Composant c = list.get(j);
-				generateConstructers(c,Config.labels.get(i));
-			}			
+			for(int j = 0 ; j < list.size() ; j++){								
+				Composant c = list.get(j);		
+				generateConstructers(c,Config.labels.get(i));			//ici on avait un if. soit dans le method generateConstructers on fait un truc si le composant n'est pas bon.
+			}															// un TreeNode par exemple.
 		}
 		if(Config.verbose >= 2 )
 			System.out.println("\t OK");
@@ -83,7 +83,7 @@ public class Generator {
 			son = sons.get(j);
 			int taille = list.size();
 			for(int i = 0 ; i < taille ; i++){
-				Node n = list.get(i);
+				Node n = list.get(i);							
 				for(int z = 0 ; z < leaf.size() ; z++){
 					if(leaf.get(z).getType().equals(son)){
 						Node n2 = Node.clone(n);
@@ -112,7 +112,7 @@ public class Generator {
 		
 		while(!exit){
 			if(Config.verbose >= 2){
-				System.out.println("generation " + start );
+		//		System.out.println("generation " + start );
 			}
 			int taille = mainList.size();
 			while(start < taille){
