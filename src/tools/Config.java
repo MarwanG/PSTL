@@ -21,7 +21,7 @@ public class Config {
 	
 
 	@Parameter(names="-n",description="Size of required trees")
-	public static int size = 15;
+	public static int size = 3;
 	@Parameter(names="-gram",description="Path for grammer file to be used")
 	public static String file="";
 	@Parameter(names="-out",description="Name of file to be used for output")
@@ -29,7 +29,7 @@ public class Config {
 	@Parameter(names="-format",description="Format of output: JSON,DOT,NORMAL")
 	public static String format="DOT";
 	@Parameter(names="-verbose",description="Level of verbosity")
-	public static int verbose = 2;
+	public static int verbose = 0;
 	
 	
 

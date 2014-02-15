@@ -104,7 +104,13 @@ public class Node {
 				tmp.getFils().set(i, base);
 				list.add(tmp);
 			}else{
-				list.addAll(fils.get(i).AddLevel(base));
+				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
+				for(int j = 0 ; j < tmp.size() ; j++){
+					Node n = Node.clone(this);
+					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
+					n.getFils().set(i, tmp.get(j));
+					list.add(n);
+				}
 			}
 		}
 		return list;

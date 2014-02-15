@@ -15,7 +15,7 @@ public class Generator {
 	public static HashMap<Integer,ArrayList<Node>>table;
 	
 	public static ArrayList<Node> constructers = new ArrayList<Node>();
-	public static ArrayList<Node> mainList = new ArrayList<Node>();
+	public static ArrayList<ArrayList<Node>> mainList = new ArrayList<ArrayList<Node>>();
 	public static ArrayList<Node> list = new ArrayList<Node>();
 	
 	
@@ -52,6 +52,8 @@ public class Generator {
 	
 		if(Config.verbose >= 2 )
 			System.out.print("Generating possible Constructors");
+		
+		mainList.add(new ArrayList<Node>());
 		
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
@@ -90,7 +92,7 @@ public class Generator {
 						n2.addFils(Node.clone(leaf.get(z)));
 						if(j == sons.size()-1){
 							constructers.add(n2);
-							mainList.add(n2);
+							mainList.get(0).add(n2);
 						}else{
 							list.add(n2);
 						}						
@@ -104,40 +106,44 @@ public class Generator {
 	
 	//PROBLEM ICI
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public static void generation(int g){
+		
 		table = new HashMap<Integer,ArrayList<Node>>();
-		boolean exit = false;
 		int start = 0 ;
 		
-		while(!exit){
-			if(Config.verbose >= 2){
-		//		System.out.println("generation " + start );
-			}
-			int taille = mainList.size();
-			while(start < taille){
-				Node tmp = mainList.get(start);
+		while(start < g){
+			ArrayList<Node> newList = new ArrayList<Node>();
+			ArrayList<Node> list = mainList.get(start);
+			int taille = list.size();
+			int i = 0;
+			while(i < taille){
+				Node tmp = list.get(i);
 				for(int j = 0 ; j < tmp.getFils().size() ; j++){
-					for(int z = 0 ; z < constructers.size() ; z++)
-						addList(tmp.AddLevel(constructers.get(z)));
+					for(int z = 0 ; z < constructers.size() ; z++){
+						addList(tmp.AddLevel(constructers.get(z)),newList);
+					}
 				}
-				start++;
+				i++;
 			}
+			mainList.add(newList);
+			start++;
 		}
 	}
 	
-	private static void addList(ArrayList<Node> list){
+	private static void addList(ArrayList<Node> list,ArrayList<Node> newList){
 		for(int i = 0 ; i < list.size() ;i++){
-			if(!mainList.contains(list.get(i))){
-				mainList.add(list.get(i));
+			if(!newList.contains(list.get(i))){
+				newList.add(list.get(i));
 				if(table.containsKey(list.get(i).getWeight())){
 					table.get(list.get(i).getWeight()).add(list.get(i));
 				}else{
-					ArrayList<Node> tmp = new ArrayList<Node>();
-					tmp.add(list.get(i));
-					table.put(list.get(i).getWeight(), tmp);
+					ArrayList<Node> list2 = new ArrayList<Node>();
+					list2.add(list.get(i));
+					table.put(list.get(i).getWeight(), list2);
 				}
 			}
 		}
-	}
+	} 
+
 }
