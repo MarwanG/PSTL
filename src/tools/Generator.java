@@ -1,6 +1,8 @@
 package tools;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 import struct.Composant;
 import struct.Node;
@@ -10,7 +12,7 @@ public class Generator {
 
 	public static ArrayList<Node> leaf = new ArrayList<Node>();
 	
-	public static ArrayList<Node> [] table;
+	public static HashMap<Integer,ArrayList<Node>>table;
 	
 	public static ArrayList<Node> constructers = new ArrayList<Node>();
 	public static ArrayList<Node> mainList = new ArrayList<Node>();
@@ -60,6 +62,8 @@ public class Generator {
 		}
 		if(Config.verbose >= 2 )
 			System.out.println("\t OK");
+		
+		Collections.sort(Generator.constructers, new NodeCompartor());		
 	}
 	
 	
@@ -89,8 +93,7 @@ public class Generator {
 							mainList.add(n2);
 						}else{
 							list.add(n2);
-						}
-						
+						}						
 					}
 				}
 			}
@@ -99,25 +102,41 @@ public class Generator {
 	
 	
 	
+	//PROBLEM ICI
+	
+	@SuppressWarnings("unchecked")
 	public static void generation(int g){
-		int taille = mainList.size();
-
-		for(int x = 0 ; x < g ; x++)
-			if(Config.verbose >= 2 )
-				System.out.println("Generation #"+x);
-			for(int i = 0 ; i < taille ; i++){
-				Node tmp = mainList.get(i);
+		table = new HashMap<Integer,ArrayList<Node>>();
+		boolean exit = false;
+		int start = 0 ;
+		
+		while(!exit){
+			if(Config.verbose >= 2){
+				System.out.println("generation " + start );
+			}
+			int taille = mainList.size();
+			while(start < taille){
+				Node tmp = mainList.get(start);
 				for(int j = 0 ; j < tmp.getFils().size() ; j++){
 					for(int z = 0 ; z < constructers.size() ; z++)
 						addList(tmp.AddLevel(constructers.get(z)));
 				}
+				start++;
 			}
+		}
 	}
 	
 	private static void addList(ArrayList<Node> list){
 		for(int i = 0 ; i < list.size() ;i++){
 			if(!mainList.contains(list.get(i))){
 				mainList.add(list.get(i));
+				if(table.containsKey(list.get(i).getWeight())){
+					table.get(list.get(i).getWeight()).add(list.get(i));
+				}else{
+					ArrayList<Node> tmp = new ArrayList<Node>();
+					tmp.add(list.get(i));
+					table.put(list.get(i).getWeight(), tmp);
+				}
 			}
 		}
 	}
