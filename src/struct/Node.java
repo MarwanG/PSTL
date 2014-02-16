@@ -70,17 +70,6 @@ public class Node {
 	}
 
 
-	//public ArrayList<String> getFilsTypes() {
-		//return filsTypes;
-	//}
-
-
-	/*public void setFilsTypes(ArrayList<String> filsTypes) {
-		this.filsTypes = filsTypes;
-	}*/
-
-	
-	@SuppressWarnings("unchecked")
 	public static Node clone(Node n){
 		if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());

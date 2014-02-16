@@ -19,23 +19,13 @@ public class Main {
 	public static void main(String args[]){
 
 		JCommander cmd = new JCommander(new Config(),args);
-		
-		
-		Parser.readFile(Config.file);
-		
+		Parser.readFile(Config.file);		
 		Generator.gen();
-
-		
-		
-		Generator.generation(Config.size);
-		
-		
-		
-		for(Integer i: Generator.table.keySet()){
-			ArrayList<Node> l = Generator.table.get(i);
-			System.out.println(l.get(0).getWeight() + " , " + l.size());
-		}
 	
+		//System.out.println(Generator.constructers.toString());
+		System.out.println(Generator.mainList.get(0));
+		Generator.generation(Config.size);
+		System.out.println(Generator.mainList.get(1));
 	}
 	
 }

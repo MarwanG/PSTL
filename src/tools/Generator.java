@@ -17,22 +17,23 @@ public class Generator {
 	public static ArrayList<Node> constructers = new ArrayList<Node>();
 	public static ArrayList<ArrayList<Node>> mainList = new ArrayList<ArrayList<Node>>();
 	public static ArrayList<Node> list = new ArrayList<Node>();
+	public static ArrayList<String> nameLeaf = new ArrayList<String>();
 	
 	
-	public static void gen() {
-		
+	public static void gen() {	
 		if(Config.verbose >= 2 )
 			System.out.println("Generating possible composants");
+		
+
+		if(Config.verbose >= 1){
+			System.out.println("List of Composants :");
+		}
 		for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
-			if(Config.verbose >= 1){
-				System.out.println("List of Composants :");
-			}
 			for(int j = 0 ; j < list.size() ;j++){
 				Composant c = list.get(j);
-
 				if(Config.verbose >= 1){
-					System.out.println(c.toString());
+					System.out.println("\t" + c.toString());
 				}
 				int nbFils = 0;
 				for(int z = 0 ; z < c.getList().size() ; z++){
@@ -40,34 +41,35 @@ public class Generator {
 						nbFils++;
 					}
 				}
-				if(nbFils == 0){		//considers only the first one met.
+				if(nbFils == 0){		
 					leaf.add(new Node(Config.labels.get(i),c.getWeight()));
+					nameLeaf.add(c.getList().get(i));
 				}
 			}
 		}
-
+		
 		if(Config.verbose >= 2 )
 			System.out.println("DONE");
-		
-	
 		if(Config.verbose >= 2 )
-			System.out.print("Generating possible Constructors");
-		
+			System.out.print("Generating possible Constructors");		
+	
 		mainList.add(new ArrayList<Node>());
 		
-		for(int i = 0 ; i < Config.labels.size() ; i++){
-			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
-			for(int j = 0 ; j < list.size() ; j++){								
-				Composant c = list.get(j);		
-				generateConstructers(c,Config.labels.get(i));			//ici on avait un if. soit dans le method generateConstructers on fait un truc si le composant n'est pas bon.
-			}															// un TreeNode par exemple.
-		}
+		//for(int i = 0 ; i < Config.labels.size() ; i++){
+			ArrayList<Composant> list = Config.hash.get(Config.labels.get(0));
+			for(int j = 0 ; j < list.size() ; j++){
+				Composant c = list.get(j);
+				generateConstructers(c,Config.labels.get(0));
+			}														
+		//}
+		
 		if(Config.verbose >= 2 )
 			System.out.println("\t OK");
 		
-		Collections.sort(Generator.constructers, new NodeCompartor());		
+		Collections.sort(Generator.constructers, new NodeCompartor());	
+		
+		
 	}
-	
 	
 	private static void generateConstructers(Composant c,String type){
 		ArrayList<Node> list = new ArrayList<Node>();
@@ -79,7 +81,20 @@ public class Generator {
 				Node n = new Node(type,c.getWeight());
 				n.addFils(Node.clone(leaf.get(i)));
 				list.add(n);
+			}else{
+				if(Config.labels.contains(son)){
+					ArrayList<Node> possible = differentSon(son);
+					for(int i1 = 0 ; i1 < possible.size() ; i1++){
+						Node n = new Node(type,c.getWeight());
+						n.addFils(possible.get(i1));
+						list.add(n);
+					}				
+				}
 			}
+		}
+		if(sons.size() == 1){
+			constructers.addAll(list);
+			mainList.get(0).addAll(list);
 		}
 		for(int j = 1 ; j < sons.size() ; j++){
 			son = sons.get(j);
@@ -96,6 +111,24 @@ public class Generator {
 						}else{
 							list.add(n2);
 						}						
+					}else if(nameLeaf.contains(son)){
+						Node n2 = Node.clone(n);
+						Node term = Node.clone(leaf.get(z));
+						term.setType(son);
+						n2.addFils(term);
+						if(j == sons.size()-1){
+							constructers.add(n2);
+							mainList.get(0).add(n2);
+						}else{
+							list.add(n2);
+						}		
+					}else if(Config.labels.contains(son)){
+						ArrayList<Node> possible = differentSon(son);
+						for(int i1 = 0 ; i1 < possible.size() ; i1++){
+							Node n2 = Node.clone(n);
+							n2.addFils(possible.get(i1));
+							list.add(n2);
+						}
 					}
 				}
 			}
@@ -104,24 +137,75 @@ public class Generator {
 	
 	
 	
-	//PROBLEM ICI
+
+	private static ArrayList<Node> differentSon(String label){
+		
+		ArrayList<Node> listN = new ArrayList<Node>();
+		ArrayList<Composant> c = Config.hash.get(label);
+		ArrayList<Node> list = new ArrayList<Node>();
 	
-	//@SuppressWarnings("unchecked")
-	public static void generation(int g){
-		
+		for(int i = 0 ; i < c.size() ; i++){
+			Composant comp = c.get(i);
+			ArrayList<String> sons = comp.getList();
+			String son = sons.get(0);
+			
+			for(int j = 0 ; j < leaf.size() ; j++){
+				if(leaf.get(j).getType().equals(son)){
+					Node n = new Node(label,comp.getWeight());
+					n.addFils(Node.clone(leaf.get(i)));
+					list.add(n);
+				}else{
+					if(Config.labels.contains(son)){
+						System.out.println("SON === " + son);
+					}
+				}
+			}
+			for(int j = 1 ; j < sons.size() ; j++){
+				son = sons.get(j).replace(";", "");
+				int taille = list.size();
+				for(int i1 = 0 ; i1 < taille ; i1++){
+					Node n = list.remove(i1);	
+					for(int i2 = 0 ; i2 < leaf.size() ; i2++){
+						if(son.equals(leaf.get(i2).getType())){
+							Node n2 = Node.clone(n);
+							n2.addFils(Node.clone(leaf.get(0)));
+							list.add(n2);
+							if(j == sons.size()-1)
+								listN.add(n2);
+						}else if(nameLeaf.contains(son)){
+							Node n2 = Node.clone(n);
+							Node term = Node.clone(leaf.get(i2));
+							term.setType(son);
+							n2.addFils(term);
+							if(j == sons.size()-1){
+								constructers.add(n2);
+								mainList.get(0).add(n2);
+							}else{
+								list.add(n2);
+							}	
+							
+						}
+					}
+				}
+			}	
+		}
+		return listN;
+	}
+	
+	public static void generation(int g){	
 		table = new HashMap<Integer,ArrayList<Node>>();
-		int start = 0 ;
-		
-		while(start < g){
-			System.out.println("GEN = " + start);
+		int start = 0 ;	
+		while(true){
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
 			int taille = list.size();
 			int i = 0;
-			System.out.println("SIZE = " + taille);
+			Collections.sort(list, new NodeCompartor());
+			if(constructers.get(0).getWeight() + list.get(0).getWeight() - 3 > g){				//should find a way for accurate -3 
+				break;
+			}
 			while(i < taille){
 				Node tmp = list.get(i);
-				//System.out.println("i = " + i);
 				for(int j = 0 ; j < tmp.getFils().size() ; j++){
 					for(int z = 0 ; z < constructers.size() ; z++){
 						addList(tmp.AddLevel(constructers.get(z)),newList);

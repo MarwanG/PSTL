@@ -29,7 +29,7 @@ public class Config {
 	@Parameter(names="-format",description="Format of output: JSON,DOT,NORMAL")
 	public static String format="DOT";
 	@Parameter(names="-verbose",description="Level of verbosity")
-	public static int verbose = 0;
+	public static int verbose = 2;
 	
 	
 
