@@ -28,13 +28,17 @@ import struct.Node;
 				switch (Config.format)	{
 				case "dot":	writer.write(ArbresToDot(listAll,Config.out));
 							writer.close();
-							dotGenerator();
 							break;
 				case "txt": writer.write(ArbresToText(listAll));
 							writer.close();
 							break;
 				case "json":System.out.println("not yet");
 							writer.close();
+							break;
+					
+				case "png" :writer.write(ArbresToDot(listAll,Config.out));
+							writer.close();
+							dotGenerator();
 							break;
 				default:	System.err.println("unsupported format will generate the default format instead");
 							writer.write(ArbresToDot(listAll,Config.out));

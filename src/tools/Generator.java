@@ -21,6 +21,7 @@ public class Generator {
 	
 	
 	public static void gen() {	
+		table = new HashMap<Integer,ArrayList<Node>>();
 		if(Config.verbose >= 2 )
 			System.out.println("Generating possible composants");
 		
@@ -41,7 +42,7 @@ public class Generator {
 						nbFils++;
 					}
 				}
-				if(nbFils == 0){		
+				if(nbFils == 0 && !c.getList().get(i).contains("SEQ")){		
 					leaf.add(new Node(Config.labels.get(i),c.getWeight()));
 					nameLeaf.add(c.getList().get(i));
 				}
@@ -74,6 +75,7 @@ public class Generator {
 		ArrayList<String> sons = c.getList();
 		String son = sons.get(0);
 
+		
 		for(int i = 0 ; i < leaf.size() ; i++){
 			if(leaf.get(i).getType().equals(son)){
 				Node n = new Node(type,c.getWeight());
@@ -87,6 +89,25 @@ public class Generator {
 						n.addFils(possible.get(i1));
 						list.add(n);
 					}				
+				}
+				if(son.contains("SEQ")){
+					String newSon = son.replace("SEQ", "").replace("(", "").replace(")","");
+					if(leaf.get(i).getType().equals(newSon)){
+						int poid = leaf.get(i).getWeight();
+						int nb = Config.size / poid;
+						Node n = new Node(type,c.getWeight());
+						n.addFils(Node.clone(leaf.get(i)));
+						constructers.add(n);
+						mainList.get(0).add(n);
+						addToTable(n);
+						for(int w = 0 ; w < nb-1 ; w++){
+							Node tmp = Node.clone(n);
+							tmp.addFils(Node.clone(leaf.get(i)));
+							constructers.add(tmp);
+							mainList.get(0).add(tmp);
+							addToTable(tmp);
+						}
+					}
 				}
 			}
 		}
@@ -196,7 +217,6 @@ public class Generator {
 	}
 	
 	public static void generation(int g){	
-		table = new HashMap<Integer,ArrayList<Node>>();
 		int start = 0 ;	
 		while(true){
 			if(Config.verbose >= 1){
@@ -240,6 +260,15 @@ public class Generator {
 		}
 	} 
 	
-	
+	private static void addToTable(Node n){
+		if(table.containsKey(n.getWeight())){
+			if(!table.get(n.getWeight()).contains(n))
+				table.get(n.getWeight()).add(n);
+		}else{
+			ArrayList<Node> list2 = new ArrayList<Node>();
+			list2.add(n);
+			table.put(n.getWeight(), list2);
+		}
+	}
 
 }

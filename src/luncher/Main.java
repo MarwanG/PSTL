@@ -22,6 +22,7 @@ public class Main {
 		JCommander cmd = new JCommander(new Config(),args);
 		Parser.readFile(Config.file);		
 		Generator.gen();
+		//System.out.println(Generator.constructers);
 		Generator.generation(Config.size);		
 		PrintUtils.toFile();
 		Stat.writeStat();
