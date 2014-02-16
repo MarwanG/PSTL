@@ -26,10 +26,14 @@ public class Config {
 	public static String file="";
 	@Parameter(names="-out",description="Name of file to be used for output")
 	public static String out="Tree";
-	@Parameter(names="-format",description="Format of output: JSON,DOT,NORMAL")
-	public static String format="DOT";
+	@Parameter(names="-format",description="Format of output: json,dot,txt")
+	public static String format="dot";
 	@Parameter(names="-verbose",description="Level of verbosity")
 	public static int verbose = 2;
+	@Parameter(names="-all",description="Generation to return", arity = 1)
+	public static boolean all =false;
+	@Parameter(names="-stat",description="return stat file as well",arity=1)
+	public static boolean stat = true;
 	
 	
 

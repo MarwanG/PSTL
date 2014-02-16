@@ -65,7 +65,7 @@ public class Parser {
 			if(split[i].contains("<")){
 				w = Integer.parseInt(split[i].charAt(2)+"");
 			}else{
-				labels.add(split[i].replace(" ", ""));
+				labels.add(split[i].replace(" ", "").replace(";",""));
 			}
 		}
 		Composant c = new Composant(w,nb,labels);

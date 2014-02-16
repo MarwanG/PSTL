@@ -12,7 +12,8 @@ import tools.Config;
 import tools.Generator;
 import tools.NodeCompartor;
 import tools.Parser;
-import tools.Utils;
+import tools.PrintUtils;
+import tools.Stat;
 
 public class Main {
 
@@ -21,11 +22,9 @@ public class Main {
 		JCommander cmd = new JCommander(new Config(),args);
 		Parser.readFile(Config.file);		
 		Generator.gen();
-	
-		//System.out.println(Generator.constructers.toString());
-		System.out.println(Generator.mainList.get(0));
-		Generator.generation(Config.size);
-		System.out.println(Generator.mainList.get(1));
+		Generator.generation(Config.size);		
+		PrintUtils.toFile();
+		Stat.writeStat();
 	}
 	
 }

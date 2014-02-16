@@ -51,20 +51,18 @@ public class Generator {
 		if(Config.verbose >= 2 )
 			System.out.println("DONE");
 		if(Config.verbose >= 2 )
-			System.out.print("Generating possible Constructors");		
+			System.out.print("Generating possible Constructors.....");		
 	
 		mainList.add(new ArrayList<Node>());
 		
-		//for(int i = 0 ; i < Config.labels.size() ; i++){
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(0));
 			for(int j = 0 ; j < list.size() ; j++){
 				Composant c = list.get(j);
 				generateConstructers(c,Config.labels.get(0));
 			}														
-		//}
 		
 		if(Config.verbose >= 2 )
-			System.out.println("\t OK");
+			System.out.println("OK");
 		
 		Collections.sort(Generator.constructers, new NodeCompartor());	
 		
@@ -155,13 +153,18 @@ public class Generator {
 					n.addFils(Node.clone(leaf.get(i)));
 					list.add(n);
 				}else{
-					if(Config.labels.contains(son)){
-						System.out.println("SON === " + son);
+					if(Config.labels.contains(son)){							//needs to be test.
+						ArrayList<Node> possible = differentSon(son);
+						for(int i1 = 0 ; i1 < possible.size() ; i1++){
+							Node n2 =  new Node(label,comp.getWeight());
+							n2.addFils(possible.get(i1));
+							list.add(n2);
+						}
 					}
 				}
 			}
 			for(int j = 1 ; j < sons.size() ; j++){
-				son = sons.get(j).replace(";", "");
+				son = sons.get(j);
 				int taille = list.size();
 				for(int i1 = 0 ; i1 < taille ; i1++){
 					Node n = list.remove(i1);	
@@ -196,12 +199,15 @@ public class Generator {
 		table = new HashMap<Integer,ArrayList<Node>>();
 		int start = 0 ;	
 		while(true){
+			if(Config.verbose >= 1){
+				System.out.println("Generation : " + (start+1));
+			}
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
 			int taille = list.size();
 			int i = 0;
 			Collections.sort(list, new NodeCompartor());
-			if(constructers.get(0).getWeight() + list.get(0).getWeight() - 3 > g){				//should find a way for accurate -3 
+			if(list.get(0).AddLevel(constructers.get(0)).get(0).getWeight() > g){				//check it again.
 				break;
 			}
 			while(i < taille){
