@@ -113,12 +113,15 @@ public class Generator {
 		int start = 0 ;
 		
 		while(start < g){
+			System.out.println("GEN = " + start);
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
 			int taille = list.size();
 			int i = 0;
+			System.out.println("SIZE = " + taille);
 			while(i < taille){
 				Node tmp = list.get(i);
+				//System.out.println("i = " + i);
 				for(int j = 0 ; j < tmp.getFils().size() ; j++){
 					for(int z = 0 ; z < constructers.size() ; z++){
 						addList(tmp.AddLevel(constructers.get(z)),newList);
@@ -136,7 +139,8 @@ public class Generator {
 			if(!newList.contains(list.get(i))){
 				newList.add(list.get(i));
 				if(table.containsKey(list.get(i).getWeight())){
-					table.get(list.get(i).getWeight()).add(list.get(i));
+					if(!table.get(list.get(i).getWeight()).contains(list.get(i)))
+						table.get(list.get(i).getWeight()).add(list.get(i));
 				}else{
 					ArrayList<Node> list2 = new ArrayList<Node>();
 					list2.add(list.get(i));
@@ -145,5 +149,7 @@ public class Generator {
 			}
 		}
 	} 
+	
+	
 
 }

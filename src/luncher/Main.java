@@ -33,8 +33,7 @@ public class Main {
 		
 		for(Integer i: Generator.table.keySet()){
 			ArrayList<Node> l = Generator.table.get(i);
-			for(int k = 0 ; k < l.size() ; k++)
-				System.out.println(l.get(k).getWeight());
+			System.out.println(l.get(0).getWeight() + " , " + l.size());
 		}
 	
 	}

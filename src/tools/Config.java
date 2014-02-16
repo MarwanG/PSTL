@@ -21,7 +21,7 @@ public class Config {
 	
 
 	@Parameter(names="-n",description="Size of required trees")
-	public static int size = 3;
+	public static int size = 9;
 	@Parameter(names="-gram",description="Path for grammer file to be used")
 	public static String file="";
 	@Parameter(names="-out",description="Name of file to be used for output")
