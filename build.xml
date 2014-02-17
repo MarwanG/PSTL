@@ -6,7 +6,7 @@
 
   <property name="src" location="src"/>
   <property name="build" location="build"/>
-  <property name="jcommander" location="lib"/>
+  <property name="jcommander" location="lib/jcommander-1.27.jar"/>
 
 
   <target name="init">
@@ -18,13 +18,13 @@
 
   <target name="compile" depends="init" description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-   <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" classpath="${jcommander}/jcommander-1.19.jar"/>
+   <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" classpath="${jcommander}"/>
   </target>
 
 
   <target name="run" depends="compile" description="run examples">
     <echo>================ The Main ================</echo>
-    <java classname="luncher.Main" classpath="${jcommander}/jcommander-1.19.jar:${build}"/>
+    <java classname="luncher.Main" classpath="${jcommander}:${build}"/>
   </target>
 
 
@@ -33,8 +33,25 @@
 	            <attribute name = "Main-Class" value = "luncher.Main"/>
 	            <attribute name = "Class-Path" value = "."/>
 	        </manifest>
-		<fileset dir="build"/>  
-	        <jar destfile = "MyJar.jar" basedir = "build" includes = "*.class"  manifest = "MANIFEST.MF"/>
+		<fileset dir="build" includes="**/*.class" />  
+	        <jar destfile = "pstl.jar" basedir = "${build}" manifest = "MANIFEST.MF">
+		  <fileset dir="${build}" includes="**/*.class"/>
+		  <zipgroupfileset dir="lib/" includes="**/*.jar"/>
+		</jar>		
   </target>
 
+  <target name = "clean" description="clean up">
+     <echo>================ Removing temporary files... ================</echo>
+        <delete verbose="true"> <!-- Remove all *~ files -->
+	  <fileset dir="${basedir}" defaultexcludes="no">
+             <include name="**/*~"/>
+           </fileset>
+        </delete>
+        <echo>================ Removing build directory ================</echo>
+	<delete dir="${build}"/>
+	<echo>================ Remove MANIFEST.MF ======================</echo>
+	<delete file="MANIFEST.MF"/>
+	<echo>================ Remove pstl.jar =========================</echo>
+	<delete file="pstl.jar"/>
+  </target>
 </project>

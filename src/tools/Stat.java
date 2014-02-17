@@ -8,30 +8,32 @@ import java.util.Collections;
 
 public class Stat {
 
-	
-	public static void writeStat(){
-		if(Config.stat)
+	public static void writeStat() {
+		if (Config.stat)
 			try {
-				if(Config.verbose >= 1){
-					System.out.println("Generating statisques file : stat.txt" );
-				}		
-				BufferedWriter writer = new BufferedWriter(new FileWriter("stat.txt"));
+				if (Config.verbose >= 1) {
+					System.out.println("Generating statisques file : stat.txt");
+				}
+				BufferedWriter writer = new BufferedWriter(new FileWriter(
+						"stat.txt"));
 				writer.write("Generation , nb of trees \n");
-				for(int i = 0 ; i < Generator.mainList.size() ; i++){
-					writer.write(i + " , " + Generator.mainList.get(i).size() + "\n");
+				for (int i = 0; i < Generator.mainList.size(); i++) {
+					writer.write(i + " , " + Generator.mainList.get(i).size()
+							+ "\n");
 				}
 				writer.write("Size of tree , nb of trees \n");
 				ArrayList<Integer> sizes = new ArrayList<Integer>();
-				for(int k : Generator.table.keySet()){
+				for (int k : Generator.table.keySet()) {
 					sizes.add(k);
 				}
 				Collections.sort(sizes);
-				for(int k : sizes)
-					writer.write(k + " , " + Generator.table.get(k).size() + "\n");
-				
+				for (int k : sizes)
+					writer.write(k + " , " + Generator.table.get(k).size()
+							+ "\n");
+
 				writer.close();
-			}catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
-			}		
-		}
+			}
+	}
 }
