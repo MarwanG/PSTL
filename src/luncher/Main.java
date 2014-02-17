@@ -2,6 +2,7 @@ package luncher;
 
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -20,12 +21,15 @@ public class Main {
 	public static void main(String args[]){
 
 		JCommander cmd = new JCommander(new Config(),args);
-		Parser.readFile(Config.file);		
-		Generator.gen();
-		//System.out.println(Generator.constructers);
-		Generator.generation(Config.size);		
-		PrintUtils.toFile();
-		Stat.writeStat();
+		if(new File(Config.file).exists()){
+			Parser.readFile(Config.file);		
+			Generator.gen();
+			Generator.generation(Config.size);		
+			PrintUtils.toFile();
+			Stat.writeStat();
+		}else{
+			System.err.println("The File passed as parameter doesnt exisit");
+		}
 	}
 	
 }

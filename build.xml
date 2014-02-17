@@ -6,7 +6,7 @@
 
   <property name="src" location="src"/>
   <property name="build" location="build"/>
-  <property name="jcommander" location="/lib"/>
+  <property name="jcommander" location="lib"/>
 
 
   <target name="init">
@@ -16,17 +16,25 @@
     <mkdir dir="${build}"/>
   </target>
 
-  <target name="compile" depends="init"
-        description="compile the source " >
+  <target name="compile" depends="init" description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" classpath="${jcommander}/jcommander-1.19.jar"/>
+   <javac debug="true" srcdir="${src}" excludes="" destdir="${build}" classpath="${jcommander}/jcommander-1.19.jar"/>
   </target>
 
 
-<target name="run" depends="compile"
-          description="run examples">
+  <target name="run" depends="compile" description="run examples">
     <echo>================ The Main ================</echo>
     <java classname="luncher.Main" classpath="${jcommander}/jcommander-1.19.jar:${build}"/>
   </target>
 
-<project>
+
+  <target name = "jar" depends="compile" description="creates a runnable jar">
+	        <manifest file = "MANIFEST.MF">
+	            <attribute name = "Main-Class" value = "luncher.Main"/>
+	            <attribute name = "Class-Path" value = "."/>
+	        </manifest>
+		<fileset dir="build"/>  
+	        <jar destfile = "MyJar.jar" basedir = "build" includes = "*.class"  manifest = "MANIFEST.MF"/>
+  </target>
+
+</project>
