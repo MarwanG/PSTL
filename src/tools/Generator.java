@@ -95,13 +95,11 @@ public class Generator {
 						n.addFils(Node.clone(leaf.get(i)));
 						constructers.add(n);
 						mainList.get(0).add(n);
-						addToTable(n);
 						for (int w = 0; w < nb - 1; w++) {
 							Node tmp = Node.clone(n);
 							tmp.addFils(Node.clone(leaf.get(i)));
 							constructers.add(tmp);
 							mainList.get(0).add(tmp);
-							addToTable(tmp);
 						}
 					}
 				}
@@ -210,6 +208,7 @@ public class Generator {
 	}
 
 	public static void generation(int g) {
+		addToTable(constructers);
 		int start = 0;
 		while (true) {
 			if (Config.verbose >= 1) {
@@ -256,6 +255,8 @@ public class Generator {
 		}
 	}
 
+	
+
 	private static void addToTable(Node n) {
 		if (table.containsKey(n.getWeight())) {
 			if (!table.get(n.getWeight()).contains(n))
@@ -264,6 +265,12 @@ public class Generator {
 			ArrayList<Node> list2 = new ArrayList<Node>();
 			list2.add(n);
 			table.put(n.getWeight(), list2);
+		}
+	}
+	
+	private static void addToTable(ArrayList<Node> n){
+		for(int i = 0 ; i < n.size() ; i++){
+			addToTable(n.get(i));
 		}
 	}
 

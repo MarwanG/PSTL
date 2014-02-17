@@ -24,7 +24,8 @@ public class PrintUtils {
 					listAll.addAll(Generator.table.get(k));
 				}
 			} else {
-				listAll.addAll(Generator.table.get(Config.size));
+				if(Generator.table.get(Config.size) != null)
+					listAll.addAll(Generator.table.get(Config.size));
 			}
 			switch (Config.format) {
 			case "dot":

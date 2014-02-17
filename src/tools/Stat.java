@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 public class Stat {
 
 	public static void writeStat() {
@@ -36,4 +42,5 @@ public class Stat {
 				e.printStackTrace();
 			}
 	}
+
 }
