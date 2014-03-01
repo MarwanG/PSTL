@@ -35,7 +35,7 @@ public class Generator {
 				}
 				int nbFils = 0;
 				for (int z = 0; z < c.getList().size(); z++) {
-					if (Config.labels.contains(c.getList().get(i))) {
+					if (Config.labels.contains(c.getList().get(z))) {
 						nbFils++;
 					}
 				}
@@ -148,6 +148,8 @@ public class Generator {
 		}
 	}
 
+	
+	//NEEDS TO BE FIXED
 	private static ArrayList<Node> differentSon(String label) {
 
 		ArrayList<Node> listN = new ArrayList<Node>();
@@ -162,7 +164,7 @@ public class Generator {
 			for (int j = 0; j < leaf.size(); j++) {
 				if (leaf.get(j).getType().equals(son)) {
 					Node n = new Node(label, comp.getWeight());
-					n.addFils(Node.clone(leaf.get(i)));
+					n.addFils(Node.clone(leaf.get(j)));
 					list.add(n);
 				} else {
 					if (Config.labels.contains(son)) { // needs to be test.
