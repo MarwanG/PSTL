@@ -9,12 +9,16 @@ public class Node {
 	String label;
 	ArrayList<Node> fils;
 	//ArrayList<String> filsTypes;
+	int weightAlone;
+	int nbFils;
 	
 	
 	public Node(String type,int weight){
 		this.type = type;
 		this.weight = weight;
 		fils = new ArrayList<Node>();
+		weightAlone = weight;
+		nbFils = fils.size();
 	}
 
 	
@@ -22,7 +26,8 @@ public class Node {
 		this.type = n.getType();
 		this.weight = n.getWeight();
 		this.fils = new ArrayList<Node>();
-
+		weightAlone = n.getWeightAlone();
+		nbFils = n.getNbFils();
 	}
 
 	public String getType() {
@@ -63,20 +68,45 @@ public class Node {
 	public void addFils(Node n){
 		this.fils.add(n);
 		this.weight = this.weight + n.getWeight();
+		nbFils = fils.size();
 	}
 
 	public void setFils(ArrayList<Node> fils) {
 		this.fils = fils;
+		nbFils = fils.size();
+	}
+	
+	
+
+
+	public int getWeightAlone() {
+		return weightAlone;
+	}
+
+
+	public void setWeightAlone(int weightAlone) {
+		this.weightAlone = weightAlone;
+	}
+
+
+	public int getNbFils() {
+		return fils.size();
+	}
+
+
+	public void setNbFils(int nbFils) {
+		this.nbFils = nbFils;
 	}
 
 
 	public static Node clone(Node n){
 		if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());
+			res.setWeightAlone(n.getWeightAlone());
 			res.setType(n.getType());
 			for(int i = 0 ; i < n.getFils().size() ; i++){
 				res.getFils().add(Node.clone(n.getFils().get(i)));
-			}
+			}			
 			return res;
 		}else{
 			return null;
@@ -108,13 +138,20 @@ public class Node {
 	
 
 
+	
+	
+	
+	
+
+
 	@Override
 	public String toString() {
-		return "Node [type=" + type + ", weight=" + weight + ", label=" + label
+		return "Node [type=" + type + ", weight=" + weight + ", nbFils="
+				+ fils.size() + ", weightAlone=" + weightAlone + ", label=" + label
 				+ ", fils=" + fils + "]";
 	}
-	
-	
+
+
 	public String shortString(){
 		return "Node [type=" + type + ", weight=" + weight + ", label=" + label+"]";
 	}
