@@ -66,7 +66,13 @@ public class Node {
 
 
 	public void addFils(Node n){
-		this.fils.add(n);
+	/*	if(this.weightAlone == n.getWeightAlone()){
+			if(this.weightAlone == 0){
+				this.fils.addAll(n.getFils());
+			}
+		}else{*/
+			this.fils.add(n);
+		//}
 		this.weight = this.weight + n.getWeight();
 		nbFils = fils.size();
 	}

@@ -65,6 +65,13 @@ public class Generator {
 			}else{
 				if (Config.labels.contains(son)) {
 					test(son);
+					for(int i1 = 0 ; i < mainList.get(0).size() ; i++){
+						if(mainList.get(0).get(i1).getType().equals(son)){
+							Node n = new Node(type,c.getWeight());
+							n.addFils(Node.clone(mainList.get(0).get(i1)));
+							list.add(n);
+						}
+					}
 				}
 			}
 		}
@@ -145,13 +152,13 @@ public class Generator {
 			if (Config.verbose >= 1) {
 				System.out.println("Generation : " + (start + 1));
 			}
+			System.out.println("start : " + start);
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
 			int taille = list.size();
 			int i = 0;
 			Collections.sort(list, new NodeCompartor());
-			if (list.get(0).AddLevel(constructers.get(0)).get(0).getWeight() > g) { // check
-		
+			if (start > g) { // check				
 				break;
 			}
 			while (i < taille) {
