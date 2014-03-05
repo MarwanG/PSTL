@@ -127,14 +127,16 @@ public class Node {
 				Node tmp =  Node.clone(this);
 				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
 				tmp.getFils().set(i, base);
-				list.add(tmp);
+				if(tmp.getWeight() > this.weight)
+					list.add(tmp);
 			}else{
 				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
 				for(int j = 0 ; j < tmp.size() ; j++){
 					Node n = Node.clone(this);
 					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
 					n.getFils().set(i, tmp.get(j));
-					list.add(n);
+					if(n.getWeight() > this.weight)
+						list.add(n);
 				}
 			}
 		}

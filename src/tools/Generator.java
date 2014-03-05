@@ -40,14 +40,25 @@ public class Generator {
 		for (int j = 0; j < list.size(); j++) {
 			Composant c = list.get(j);
 			ArrayList<Node> x = generateConstructers(c, Config.labels.get(0));
-			mainList.get(0).addAll(x);
+			for(int z = 0 ; z < x.size() ; z++){
+				if(!mainList.get(0).contains(x.get(z)))
+					mainList.get(0).add(x.get(z));
+			}
 		}
 
 		if (Config.verbose >= 2){
 			System.out.println("OK");
 		}
 		Collections.sort(Generator.constructers, new NodeCompartor());
-
+		
+		int i = 0;
+		while(i < mainList.get(0).size()){
+			if(!mainList.get(0).get(i).getType().equals(Config.labels.get(0))){
+				mainList.get(0).remove(i);
+			}else{
+				i++;
+			}				
+		}
 	}
 
 	private static ArrayList<Node> generateConstructers(Composant c, String type) {
@@ -68,7 +79,9 @@ public class Generator {
 					for(int i1 = 0 ; i < mainList.get(0).size() ; i++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
 							Node n = new Node(type,c.getWeight());
+							System.out.println("C========== " + n);
 							n.addFils(Node.clone(mainList.get(0).get(i1)));
+							System.out.println("C===== +++  " + n);
 							list.add(n);
 						}
 					}
@@ -135,7 +148,12 @@ public class Generator {
 		ArrayList<Composant> list = Config.hash.get(c);
 		for(int i = 0 ; i < list.size() ; i++){
 			Composant comp = list.get(i);
-			mainList.get(0).addAll(generateConstructers(comp,c));
+			ArrayList<Node> tmp = generateConstructers(comp,c);
+			for(int i1 = 0 ; i1 < tmp.size(); i1++){
+				if(!mainList.get(0).contains(tmp.get(i1))){
+					mainList.get(0).add(tmp.get(i1));
+				}
+			}
 		}
 		
 	}
@@ -147,10 +165,10 @@ public class Generator {
 	 */
 	public static void generation(int g) {
 		addToTable(constructers);
-		int start = 0;
+		int start =  0;
 		while (true) {
 			if (Config.verbose >= 1) {
-				System.out.println("Generation : " + (start + 1));
+				System.out.println("Generation : " + (start));
 			}
 			System.out.println("start : " + start);
 			ArrayList<Node> newList = new ArrayList<Node>();
@@ -158,7 +176,12 @@ public class Generator {
 			int taille = list.size();
 			int i = 0;
 			Collections.sort(list, new NodeCompartor());
-			if (start > g) { // check				
+			/*if(list.get(0).AddLevel(constructers.get(1)).size() > 0){
+				if (list.get(0).AddLevel(constructers.get(1)).get(0).getWeight() > g) { // check
+					break;
+				}
+			}*/
+			if(list.get(0).getWeight() > g){
 				break;
 			}
 			while (i < taille) {
