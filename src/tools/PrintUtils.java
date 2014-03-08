@@ -27,6 +27,7 @@ public class PrintUtils {
 				if(Generator.table.get(Config.size) != null)
 					listAll.addAll(Generator.table.get(Config.size));
 			}
+			listAll = Node.removeZeros(listAll);
 			switch (Config.format) {
 			case "dot":
 				writer.write(ArbresToDot(listAll, Config.out));
@@ -157,7 +158,6 @@ public class PrintUtils {
 			Process pr = rt.exec("which dot");
 
 			pr.waitFor();
-
 			boolean canDo = (pr.exitValue() == 0);
 			if (!canDo) {
 				System.err

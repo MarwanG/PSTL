@@ -34,7 +34,7 @@ public class Main {
 				PrintUtils.toFile();
 				Stat.writeStat();
 				
-				System.out.println(Generator.mainList.get(Config.size));
+				//System.out.println(Generator.mainList.get(Config.size));
 			} else {
 				System.err.println("The File passed as parameter doesnt exisit");
 			}

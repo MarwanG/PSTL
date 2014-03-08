@@ -120,6 +120,36 @@ public class Node {
 	}
 	
 	
+	public static Node removeZeros(Node n){
+		Node tmp = clone(n);
+		int i = 0 ;
+		while(i < tmp.getFils().size()){
+			if((tmp.getType() == tmp.getFils().get(i).getType()) && (tmp.getWeightAlone() == 0) && (tmp.getFils().get(i).getWeightAlone() == 0)){
+				Node fils = tmp.getFils().remove(i);
+				for(int i1 = fils.getFils().size() -1 ; i1 >= 0  ; i1--){
+					tmp.getFils().add(i, fils.getFils().get(i1));
+				}
+			}else{
+				tmp.getFils().set(i, Node.removeZeros(tmp.getFils().get(i)));
+				i++;
+			}
+		}
+		return tmp;
+	}
+	
+	
+	public static ArrayList<Node> removeZeros(ArrayList<Node> n){
+		ArrayList<Node> newList = new ArrayList<Node>();
+		
+		for(int i = 0 ; i < n.size() ; i++){
+			Node tmp = Node.removeZeros(n.get(i));
+			if(!newList.contains(tmp)){
+				newList.add(tmp);
+			}
+		}		
+		return newList;
+	}
+	
 	public ArrayList<Node> AddLevel(Node base){
 		ArrayList<Node> list = new ArrayList<Node>();
 		for(int i = 0 ; i < fils.size() ; i++){
@@ -179,7 +209,7 @@ public class Node {
 	public String toDot(){
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0 ; i < fils.size() ; i++){
-			sb.append(label + "->" + fils.get(i).getLabel() + "; \n");
+			sb.append(label + "->" + fils.get(i).getLabel() + "; \n");	
 			sb.append(fils.get(i).toDotTmp());
 		}		
 		return sb.toString();
