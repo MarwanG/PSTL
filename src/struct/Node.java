@@ -124,7 +124,7 @@ public class Node {
 		Node tmp = clone(n);
 		int i = 0 ;
 		while(i < tmp.getFils().size()){
-			if((tmp.getType() == tmp.getFils().get(i).getType()) && (tmp.getWeightAlone() == 0) && (tmp.getFils().get(i).getWeightAlone() == 0)){
+			if(tmp.getFils().get(i).getWeightAlone() == 0){
 				Node fils = tmp.getFils().remove(i);
 				for(int i1 = fils.getFils().size() -1 ; i1 >= 0  ; i1--){
 					tmp.getFils().add(i, fils.getFils().get(i1));
