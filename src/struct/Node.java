@@ -15,7 +15,11 @@ public class Node {
 	
 	public Node(String type,int weight){
 		this.type = type;
-		this.weight = weight;
+		if(weight == -1){
+			this.weight = 0;
+		}else{
+			this.weight = weight;
+		}
 		fils = new ArrayList<Node>();
 		weightAlone = weight;
 		nbFils = fils.size();
@@ -66,14 +70,12 @@ public class Node {
 
 
 	public void addFils(Node n){
-	/*	if(this.weightAlone == n.getWeightAlone()){
-			if(this.weightAlone == 0){
-				this.fils.addAll(n.getFils());
-			}
-		}else{*/
-			this.fils.add(n);
-		//}
-		this.weight = this.weight + n.getWeight();
+		this.fils.add(n);
+		if(n.getWeight() != -1){
+			this.weight = this.weight + n.getWeight();
+		}else{
+			System.out.println("i wont add " + n.getWeight());
+		}
 		nbFils = fils.size();
 	}
 
@@ -124,7 +126,7 @@ public class Node {
 		Node tmp = clone(n);
 		int i = 0 ;
 		while(i < tmp.getFils().size()){
-			if(tmp.getFils().get(i).getWeightAlone() == 0){
+			if(tmp.getFils().get(i).getWeightAlone() == -1){
 				Node fils = tmp.getFils().remove(i);
 				for(int i1 = fils.getFils().size() -1 ; i1 >= 0  ; i1--){
 					tmp.getFils().add(i, fils.getFils().get(i1));

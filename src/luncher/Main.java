@@ -30,9 +30,9 @@ public class Main {
 				
 				System.out.println(Generator.mainList.get(0));
 				
-			//	Generator.generation(Config.size);
-			//	PrintUtils.toFile();
-			//	Stat.writeStat();
+				Generator.generation(Config.size);
+				PrintUtils.toFile();
+				Stat.writeStat();
 				
 				//System.out.println(Generator.mainList.get(Config.size));
 			} else {

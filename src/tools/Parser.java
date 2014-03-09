@@ -78,7 +78,7 @@ public class Parser {
 		for(String e : hash.keySet()){
 			String res = hash.get(e);
 			res = res.replace("(", "").replace(")", "").replaceFirst("SEQ", "").replace(" ", "");
-			String newRule = e + "::= " + res + " * <0> + " + res +" * "+e +" * <0>;";
+			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
 			parseLine(newRule);
 		}
 	}
@@ -91,7 +91,7 @@ public class Parser {
 		ArrayList<String> labels = new ArrayList<String>();
 		for(int i = 0 ; i < split.length ; i++){
 			if(split[i].contains("<")){
-				w = Integer.parseInt(split[i].charAt(2)+"");
+				w = Integer.parseInt(split[i].replace("<", "").replace(">", "").replace(";", "").replace(" ", ""));
 			}else{
 				labels.add(split[i].replace(" ", "").replace(";",""));
 			}
