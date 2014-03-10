@@ -26,9 +26,15 @@ public class Main {
 			if (new File(Config.file).exists()) {
 				Parser.readFile(Config.file);
 				Generator.gen();
+				System.out.println(Generator.constructers);
+				
+				System.out.println(Generator.mainList.get(0));
+				
 				Generator.generation(Config.size);
 				PrintUtils.toFile();
 				Stat.writeStat();
+				
+				//System.out.println(Generator.mainList.get(Config.size));
 			} else {
 				System.err.println("The File passed as parameter doesnt exisit");
 			}

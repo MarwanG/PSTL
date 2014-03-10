@@ -49,11 +49,39 @@ public class Parser {
 			l = l.substring(l.indexOf("::=")+4);
 			String[] split = l.split("\\+");
 			for(int i = 0 ; i < split.length ; i++){
-				createComposant(split[i],obj);
+				if(split[i].contains("SEQ")){
+					seqTreatment(split[i],obj);
+				}else{
+					createComposant(split[i],obj);
+				}
 			}
 		}
 	}
 
+	private static int count = 0 ;
+	
+	private static void seqTreatment(String s,String obj){
+		System.out.println(s);
+		String [] split = s.split("\\*");
+		String newComp = "";
+		HashMap<String,String> hash = new HashMap<String,String>(); 
+		for(int i = 0 ; i < split.length ; i++){
+			if(split[i].contains("SEQ")){
+				hash.put("L"+count, split[i]);
+				split[i] = "L"+count;
+				count++;
+			}
+			newComp+= split[i] + " *";
+		}
+		newComp = newComp.substring(0, newComp.length()-1);
+		createComposant(newComp,obj);
+		for(String e : hash.keySet()){
+			String res = hash.get(e);
+			res = res.replace("(", "").replace(")", "").replaceFirst("SEQ", "").replace(" ", "");
+			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
+			parseLine(newRule);
+		}
+	}
 	
 	
 	private static void createComposant(String s, String obj) {
@@ -63,7 +91,7 @@ public class Parser {
 		ArrayList<String> labels = new ArrayList<String>();
 		for(int i = 0 ; i < split.length ; i++){
 			if(split[i].contains("<")){
-				w = Integer.parseInt(split[i].charAt(2)+"");
+				w = Integer.parseInt(split[i].replace("<", "").replace(">", "").replace(";", "").replace(" ", ""));
 			}else{
 				labels.add(split[i].replace(" ", "").replace(";",""));
 			}
