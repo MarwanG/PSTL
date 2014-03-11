@@ -61,7 +61,6 @@ public class Parser {
 	private static int count = 0 ;
 	
 	private static void seqTreatment(String s,String obj){
-		System.out.println(s);
 		String [] split = s.split("\\*");
 		String newComp = "";
 		HashMap<String,String> hash = new HashMap<String,String>(); 
@@ -77,8 +76,10 @@ public class Parser {
 		createComposant(newComp,obj);
 		for(String e : hash.keySet()){
 			String res = hash.get(e);
-			res = res.replace("(", "").replace(")", "").replaceFirst("SEQ", "").replace(" ", "");
+			res = res.replaceFirst("\\(", "").replaceFirst("SEQ", "").replace(" ", "");
+			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
+			System.out.println(newRule);
 			parseLine(newRule);
 		}
 	}
