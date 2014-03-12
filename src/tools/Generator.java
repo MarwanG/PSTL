@@ -32,7 +32,7 @@ public class Generator {
 			System.out.println("DONE");
 		}
 		if (Config.verbose >= 2){
-			System.out.print("Generating possible Constructors.....\n");
+			System.out.print("Generating possible Constructors.....");
 		}
 		
 		mainList.add(new ArrayList<Node>());
@@ -52,7 +52,7 @@ public class Generator {
 		Collections.sort(Generator.constructers, new NodeCompartor());
 		
 		int i = 0;
-		while(i < mainList.get(0).size()){
+		while(i < mainList.get(0).size()){		
 			if(!mainList.get(0).get(i).getType().equals(Config.labels.get(0))){
 				mainList.get(0).remove(i);
 			}else{
@@ -76,12 +76,10 @@ public class Generator {
 			}else{
 				if (Config.labels.contains(son)) {
 					test(son);
-					for(int i1 = 0 ; i < mainList.get(0).size() ; i++){
+					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
 							Node n = new Node(type,c.getWeight());
-							System.out.println("C========== " + n);
 							n.addFils(Node.clone(mainList.get(0).get(i1)));
-							System.out.println("C===== +++  " + n);
 							list.add(n);
 						}
 					}
@@ -144,7 +142,7 @@ public class Generator {
 	
 	
 	private static void test(String c){
-		System.out.println("test");
+
 		ArrayList<Composant> list = Config.hash.get(c);
 		for(int i = 0 ; i < list.size() ; i++){
 			Composant comp = list.get(i);
@@ -176,11 +174,7 @@ public class Generator {
 			int taille = list.size();
 			int i = 0;
 			Collections.sort(list, new NodeCompartor());
-			/*if(list.get(0).AddLevel(constructers.get(1)).size() > 0){
-				if (list.get(0).AddLevel(constructers.get(1)).get(0).getWeight() > g) { // check
-					break;
-				}
-			}*/
+			
 			if(list.get(0).getWeight() > g){
 				break;
 			}
@@ -188,7 +182,8 @@ public class Generator {
 				Node tmp = list.get(i);
 				for (int j = 0; j < tmp.getFils().size(); j++) {
 					for (int z = 0; z < constructers.size(); z++) {
-						addList(tmp.AddLevel(constructers.get(z)), newList);
+						ArrayList <Node> t = tmp.AddLevel(constructers.get(z));
+						addList(t, newList);
 					}
 				}
 				i++;

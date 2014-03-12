@@ -28,6 +28,7 @@ public class PrintUtils {
 					listAll.addAll(Generator.table.get(Config.size));
 			}
 			listAll = Node.removeZeros(listAll);
+			System.out.println("final list = " + listAll);
 			switch (Config.format) {
 			case "dot":
 				writer.write(ArbresToDot(listAll, Config.out));

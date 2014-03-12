@@ -26,9 +26,9 @@ public class Main {
 			if (new File(Config.file).exists()) {
 				Parser.readFile(Config.file);
 				Generator.gen();
-				System.out.println(Generator.constructers);
+				System.out.println("completeur : ");
 				
-				System.out.println(Generator.mainList.get(0));
+				System.out.println(Generator.constructers);
 				
 				Generator.generation(Config.size);
 				PrintUtils.toFile();
