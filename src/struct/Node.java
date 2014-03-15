@@ -156,6 +156,56 @@ public class Node {
 	}
 	
 	
+	public String toNormalized() {
+		if (this.fils.size() == 0){
+			return "01";
+		}
+		else {
+			ArrayList<String> normalizedFilsNames = new ArrayList<String>();
+			for (int i = 0; i< this.fils.size(); i++){
+				normalizedFilsNames.add(this.fils.get(i).toNormalized());
+			}
+			Collections.sort(normalizedFilsNames);
+			StringBuffer sb = new StringBuffer("0");
+			for (int i = 0; i<normalizedFilsNames.size();i++){
+				sb.append(normalizedFilsNames.get(i));
+			}
+			sb.append("1");
+			return sb.toString();
+		}
+	}
+	
+	public static Node getNormalizedNode(String normalized){
+		if (normalized == "01"){
+				return new Node("NOTYPE",0);
+		}
+		else {
+			Node resultat = new Node("NOTYPE",0);
+			ArrayList<String> filsName = new ArrayList<String>();
+			int cut = 0;
+			int debutCut = 0, finCut = 0;
+			for (int i = 1; i<normalized.length(); i++){
+				int cutBefore = cut;
+				if (normalized.charAt(i) == '0')
+					cut++;
+				else
+					cut--;
+				if (cut == 1 && cutBefore == 0)
+					debutCut = i;
+				else if (cut == 0 && cutBefore == 1){
+					finCut = i;
+					filsName.add(normalized.substring(debutCut, finCut+1));
+				}
+			}
+			for (String son : filsName){
+				resultat.addFils(Node.getNormalizedNode(son));
+			}
+			return resultat;
+		}
+	}
+
+	
+	
 	public static String labelNode(Node n){
 		if(n.getFils().size() == 0){
 			return "01";

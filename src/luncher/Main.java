@@ -34,7 +34,11 @@ public class Main {
 				PrintUtils.toFile();
 				Stat.writeStat();
 				
-				//System.out.println(Generator.mainList.get(Config.size));
+				
+				System.out.println(Generator.mainList.get(1).get(0));
+				System.out.println(Node.labelNode(Generator.mainList.get(1).get(0)));
+				System.out.println(Node.getNormalizedNode("0010010111"));
+				System.out.println(Node.labelNode(Node.getNormalizedNode("0010010111")));
 			} else {
 				System.err.println("The File passed as parameter doesnt exisit");
 			}
