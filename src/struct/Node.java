@@ -8,11 +8,15 @@ public class Node {
 	int weight;
 	String label;
 	ArrayList<Node> fils;
-	//ArrayList<String> filsTypes;
 	int weightAlone;
 	int nbFils;
 	
 	
+	/**
+	 * Constructer 
+	 * @param type String correponds to weight
+	 * @param weight correponds to weight of the node as well as weight alone.
+	 */
 	public Node(String type,int weight){
 		this.type = type;
 		if(weight == -1){
@@ -26,6 +30,10 @@ public class Node {
 	}
 
 	
+	/**
+	 * Creates Node exactly like the Node passed in parameter.
+	 * @param n
+	 */
 	public Node(Node n){
 		this.type = n.getType();
 		this.weight = n.getWeight();
@@ -34,41 +42,12 @@ public class Node {
 		nbFils = n.getNbFils();
 	}
 
-	public String getType() {
-		return type;
-	}
 
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
-	public int getWeight() {
-		return weight;
-	}
-
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-
-	public String getLabel() {
-		return label;
-	}
-
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-
-	public ArrayList<Node> getFils() {
-		return fils;
-	}
-
-
+	/**
+	 * Adds Node n as a son to its list of sons.
+	 * @param n
+	 */
 	public void addFils(Node n){
 		this.fils.add(n);
 		if(n.getWeight() != -1){
@@ -79,34 +58,43 @@ public class Node {
 		nbFils = fils.size();
 	}
 
-	public void setFils(ArrayList<Node> fils) {
-		this.fils = fils;
-		nbFils = fils.size();
+	
+	/**
+	 * replaces all possible leafs with base node
+	 * @param base
+	 * @return ArrayList<Node> corresponds to all possible options.
+	 */
+	public ArrayList<Node> AddLevel(Node base){
+		ArrayList<Node> list = new ArrayList<Node>();
+		for(int i = 0 ; i < fils.size() ; i++){
+			if(fils.get(i).getFils().size() == 0){
+				Node tmp =  Node.clone(this);
+				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
+				tmp.getFils().set(i, base);
+				if(tmp.getWeight() > this.weight)
+					list.add(tmp);
+			}else{
+				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
+				for(int j = 0 ; j < tmp.size() ; j++){
+					Node n = Node.clone(this);
+					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
+					n.getFils().set(i, tmp.get(j));
+					if(n.getWeight() > this.weight)
+						list.add(n);
+				}
+			}
+		}
+		return list;
 	}
 	
-	
 
+	//STATIC METHODS
 
-	public int getWeightAlone() {
-		return weightAlone;
-	}
-
-
-	public void setWeightAlone(int weightAlone) {
-		this.weightAlone = weightAlone;
-	}
-
-
-	public int getNbFils() {
-		return fils.size();
-	}
-
-
-	public void setNbFils(int nbFils) {
-		this.nbFils = nbFils;
-	}
-
-
+	/**
+	 * Clones N (deep cloning)
+	 * @param n	Node to be cloned
+	 * @return
+	 */
 	public static Node clone(Node n){
 		if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());
@@ -121,7 +109,11 @@ public class Node {
 		}
 	}
 	
-	
+	/**
+	 * Goes around the 
+	 * @param n
+	 * @return
+	 */
 	public static Node removeZeros(Node n){
 		Node tmp = clone(n);
 		int i = 0 ;
@@ -152,28 +144,7 @@ public class Node {
 		return newList;
 	}
 	
-	public ArrayList<Node> AddLevel(Node base){
-		ArrayList<Node> list = new ArrayList<Node>();
-		for(int i = 0 ; i < fils.size() ; i++){
-			if(fils.get(i).getFils().size() == 0){
-				Node tmp =  Node.clone(this);
-				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
-				tmp.getFils().set(i, base);
-				if(tmp.getWeight() > this.weight)
-					list.add(tmp);
-			}else{
-				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
-				for(int j = 0 ; j < tmp.size() ; j++){
-					Node n = Node.clone(this);
-					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
-					n.getFils().set(i, tmp.get(j));
-					if(n.getWeight() > this.weight)
-						list.add(n);
-				}
-			}
-		}
-		return list;
-	}
+	
 
 	
 
@@ -227,6 +198,67 @@ public class Node {
 		return sb.toString();
 	}
 	
+	
+	public void setFils(ArrayList<Node> fils) {
+		this.fils = fils;
+		nbFils = fils.size();
+	}
+	
+	
+
+
+	public int getWeightAlone() {
+		return weightAlone;
+	}
+
+
+	public void setWeightAlone(int weightAlone) {
+		this.weightAlone = weightAlone;
+	}
+
+
+	public int getNbFils() {
+		return fils.size();
+	}
+
+
+	public void setNbFils(int nbFils) {
+		this.nbFils = nbFils;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	public int getWeight() {
+		return weight;
+	}
+
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+
+	public String getLabel() {
+		return label;
+	}
+
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+
+	public ArrayList<Node> getFils() {
+		return fils;
+	}
 	
 	
 }
