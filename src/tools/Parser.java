@@ -51,11 +51,38 @@ public class Parser {
 			for(int i = 0 ; i < split.length ; i++){
 				if(split[i].contains("SEQ")){
 					seqTreatment(split[i],obj);
+				}if(split[i].contains("SET")){
+					setTreatment(split[i],obj);
 				}else{
 					createComposant(split[i],obj);
 				}
 			}
 		}
+	}
+
+	private static void setTreatment(String s, String obj) {
+		String [] split = s.split("\\*");
+		String newComp = "";
+		HashMap<String,String> hash = new HashMap<String,String>(); 
+		for(int i = 0 ; i < split.length ; i++){
+			if(split[i].contains("SET")){
+				hash.put("L"+count, split[i]);
+				split[i] = "L"+count;
+				count++;
+			}
+			newComp+= split[i] + " *";
+		}
+		newComp = newComp.substring(0, newComp.length()-1);
+		createComposant(newComp,obj);
+		for(String e : hash.keySet()){
+			String res = hash.get(e);
+			res = res.replaceFirst("\\(", "").replaceFirst("SET", "").replace(" ", "");
+			res = res.substring(0,res.length()-1);
+			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
+			System.out.println(newRule);
+			parseLine(newRule);
+		}
+		
 	}
 
 	private static int count = 0 ;
