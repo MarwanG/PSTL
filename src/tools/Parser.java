@@ -66,8 +66,8 @@ public class Parser {
 		HashMap<String,String> hash = new HashMap<String,String>(); 
 		for(int i = 0 ; i < split.length ; i++){
 			if(split[i].contains("SET")){
-				hash.put("L"+count, split[i]);
-				split[i] = "L"+count;
+				hash.put("SL"+count, split[i]);
+				split[i] = "SL"+count;
 				count++;
 			}
 			newComp+= split[i] + " *";

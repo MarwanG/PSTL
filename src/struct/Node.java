@@ -166,6 +166,7 @@ public class Node {
 				normalizedFilsNames.add(this.fils.get(i).toNormalized());
 			}
 			Collections.sort(normalizedFilsNames);
+			Collections.reverse(normalizedFilsNames);
 			StringBuffer sb = new StringBuffer("0");
 			for (int i = 0; i<normalizedFilsNames.size();i++){
 				sb.append(normalizedFilsNames.get(i));
@@ -206,24 +207,7 @@ public class Node {
 
 	
 	
-	public static String labelNode(Node n){
-		if(n.getFils().size() == 0){
-			return "01";
-		}else{
-			ArrayList<String> label = new ArrayList<String>();
-			for(int i = 0 ; i < n.getFils().size() ; i++){
-				label.add(Node.labelNode(n.getFils().get(i)));
-			}
-			Collections.sort(label,new LabelCompartor());
-			StringBuffer s = new StringBuffer();
-			s.append("0");
-			for(int i = 0 ; i < label.size() ; i++){
-				s.append(label.get(i));
-			}
-			s.append("1");
-			return s.toString();
-		}
-	}
+	
 	
 	
 	public ArrayList<Node> AddLevel(Node base){

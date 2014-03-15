@@ -36,9 +36,9 @@ public class Main {
 				
 				
 				System.out.println(Generator.mainList.get(1).get(0));
-				System.out.println(Node.labelNode(Generator.mainList.get(1).get(0)));
+				System.out.println(Generator.mainList.get(1).get(0).toNormalized());
 				System.out.println(Node.getNormalizedNode("0010010111"));
-				System.out.println(Node.labelNode(Node.getNormalizedNode("0010010111")));
+
 			} else {
 				System.err.println("The File passed as parameter doesnt exisit");
 			}
