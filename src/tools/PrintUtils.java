@@ -27,7 +27,13 @@ public class PrintUtils {
 				if(Generator.table.get(Config.size) != null)
 					listAll.addAll(Generator.table.get(Config.size));
 			}
+			
+			
+			
 			listAll = Node.removeZeros(listAll);
+			System.out.println("final list = " + listAll);
+			listAll = ToolNode.tmp2(listAll);
+			
 			System.out.println("final list = " + listAll);
 			switch (Config.format) {
 			case "dot":

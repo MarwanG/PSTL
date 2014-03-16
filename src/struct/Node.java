@@ -3,7 +3,6 @@ package struct;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import tools.LabelCompartor;
 
 public class Node {
 
@@ -11,7 +10,6 @@ public class Node {
 	int weight;
 	String label;
 	ArrayList<Node> fils;
-	//ArrayList<String> filsTypes;
 	int weightAlone;
 	int nbFils;
 	
@@ -111,7 +109,15 @@ public class Node {
 
 
 	public static Node clone(Node n){
-		if(n instanceof Node){
+		if(n instanceof SETNode){
+			SETNode res  = new SETNode(n.getLabel(),n.getWeight());
+			res.setWeightAlone(n.getWeightAlone());
+			res.setType(n.getType());
+			for(int i = 0 ; i < n.getFils().size() ; i++){
+				res.getFils().add(Node.clone(n.getFils().get(i)));
+			}			
+			return res;
+		}else if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());
 			res.setWeightAlone(n.getWeightAlone());
 			res.setType(n.getType());
@@ -244,7 +250,7 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "Node [type=" + type + ", weight=" + weight + ", nbFils="
+		return "Node [type=" + type + " , NODE , weight=" + weight + ", nbFils="
 				+ fils.size() + ", weightAlone=" + weightAlone + ", label=" + label
 				+ ", fils=" + fils + "]";
 	}
