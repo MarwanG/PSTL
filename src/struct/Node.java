@@ -205,42 +205,6 @@ public class Node {
 		}
 	}
 
-	
-	
-	
-	
-	
-	public ArrayList<Node> AddLevel(Node base){
-		ArrayList<Node> list = new ArrayList<Node>();
-		for(int i = 0 ; i < fils.size() ; i++){
-			if(fils.get(i).getFils().size() == 0){
-				Node tmp =  Node.clone(this);
-				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
-				tmp.getFils().set(i, base);
-				if(tmp.getWeight() > this.weight)
-					list.add(tmp);
-			}else{
-				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
-				for(int j = 0 ; j < tmp.size() ; j++){
-					Node n = Node.clone(this);
-					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
-					n.getFils().set(i, tmp.get(j));
-					if(n.getWeight() > this.weight)
-						list.add(n);
-				}
-			}
-		}
-		return list;
-	}
-
-	
-
-
-	
-	
-	
-	
-
 
 	@Override
 	public String toString() {
