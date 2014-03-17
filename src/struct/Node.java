@@ -1,5 +1,6 @@
 package struct;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -106,9 +107,19 @@ public class Node {
 			for (int i = 0; i< this.fils.size(); i++){
 				normalizedFilsNames.add(this.fils.get(i).toNormalized());
 			}
+		//	ArrayList<String> l = (ArrayList<String>) normalizedFilsNames.clone();
 			Collections.sort(normalizedFilsNames);
 			Collections.reverse(normalizedFilsNames);
-			StringBuffer sb = new StringBuffer("0");
+			StringBuffer sb;
+		/*	IDEA !!!
+			if(l.equals(normalizedFilsNames)){
+				sb = new StringBuffer("0");	
+			}else{
+				sb = new StringBuffer("M0");
+			}	
+			*/
+			sb = new StringBuffer("0");	
+			
 			for (int i = 0; i<normalizedFilsNames.size();i++){
 				sb.append(normalizedFilsNames.get(i));
 			}
