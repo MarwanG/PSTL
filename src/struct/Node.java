@@ -1,6 +1,8 @@
 package struct;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class Node {
 
@@ -96,7 +98,15 @@ public class Node {
 	 * @return
 	 */
 	public static Node clone(Node n){
-		if(n instanceof Node){
+		if(n instanceof SETNode){
+			SETNode res  = new SETNode(n.getLabel(),n.getWeight());
+			res.setWeightAlone(n.getWeightAlone());
+			res.setType(n.getType());
+			for(int i = 0 ; i < n.getFils().size() ; i++){
+				res.getFils().add(Node.clone(n.getFils().get(i)));
+			}			
+			return res;
+		}else if(n instanceof Node){
 			Node res  = new Node(n.getLabel(),n.getWeight());
 			res.setWeightAlone(n.getWeightAlone());
 			res.setType(n.getType());
@@ -146,6 +156,83 @@ public class Node {
 	
 	
 
+	public String toNormalized() {
+		if (this.fils.size() == 0){
+			return "01";
+		}
+		else {
+			ArrayList<String> normalizedFilsNames = new ArrayList<String>();
+			for (int i = 0; i< this.fils.size(); i++){
+				normalizedFilsNames.add(this.fils.get(i).toNormalized());
+			}
+			Collections.sort(normalizedFilsNames);
+			Collections.reverse(normalizedFilsNames);
+			StringBuffer sb = new StringBuffer("0");
+			for (int i = 0; i<normalizedFilsNames.size();i++){
+				sb.append(normalizedFilsNames.get(i));
+			}
+			sb.append("1");
+			return sb.toString();
+		}
+	}
+	
+	public static Node getNormalizedNode(String normalized){
+		if (normalized == "01"){
+				return new Node("NOTYPE",0);
+		}
+		else {
+			Node resultat = new Node("NOTYPE",0);
+			ArrayList<String> filsName = new ArrayList<String>();
+			int cut = 0;
+			int debutCut = 0, finCut = 0;
+			for (int i = 1; i<normalized.length(); i++){
+				int cutBefore = cut;
+				if (normalized.charAt(i) == '0')
+					cut++;
+				else
+					cut--;
+				if (cut == 1 && cutBefore == 0)
+					debutCut = i;
+				else if (cut == 0 && cutBefore == 1){
+					finCut = i;
+					filsName.add(normalized.substring(debutCut, finCut+1));
+				}
+			}
+			for (String son : filsName){
+				resultat.addFils(Node.getNormalizedNode(son));
+			}
+			return resultat;
+		}
+	}
+
+	
+	
+	
+	
+	
+	public ArrayList<Node> AddLevel(Node base){
+		ArrayList<Node> list = new ArrayList<Node>();
+		for(int i = 0 ; i < fils.size() ; i++){
+			if(fils.get(i).getFils().size() == 0){
+				Node tmp =  Node.clone(this);
+				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
+				tmp.getFils().set(i, base);
+				if(tmp.getWeight() > this.weight)
+					list.add(tmp);
+			}else{
+				ArrayList<Node> tmp = fils.get(i).AddLevel(base);
+				for(int j = 0 ; j < tmp.size() ; j++){
+					Node n = Node.clone(this);
+					n.setWeight(n.getWeight() - n.getFils().get(i).getWeight() + tmp.get(j).getWeight());
+					n.getFils().set(i, tmp.get(j));
+					if(n.getWeight() > this.weight)
+						list.add(n);
+				}
+			}
+		}
+		return list;
+	}
+
 	
 
 
@@ -157,7 +244,7 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "Node [type=" + type + ", weight=" + weight + ", nbFils="
+		return "Node [type=" + type + " , NODE , weight=" + weight + ", nbFils="
 				+ fils.size() + ", weightAlone=" + weightAlone + ", label=" + label
 				+ ", fils=" + fils + "]";
 	}

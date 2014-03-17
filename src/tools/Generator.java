@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import struct.Composant;
 import struct.Node;
+import struct.SETNode;
 
 public class Generator {
 
@@ -70,12 +71,18 @@ public class Generator {
 		String son = sons.get(0);
 		for (int i = 0; i < leaf.size(); i++) {
 			if (leaf.get(i).getType().equals(son)) {
-				Node n = new Node(type, c.getWeight());
-				n.addFils(Node.clone(leaf.get(i)));
-				list.add(n);
+				if(type.contains("SL")){
+					SETNode n = new SETNode(type, c.getWeight());
+					n.addFils(Node.clone(leaf.get(i)));
+					list.add(n);
+				}else{
+					Node n = new Node(type, c.getWeight());
+					n.addFils(Node.clone(leaf.get(i)));
+					list.add(n);
+				}
 			}else{
 				if (Config.labels.contains(son)) {
-					test(son);
+					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
 							Node n = new Node(type,c.getWeight());
@@ -208,8 +215,12 @@ public class Generator {
 						nbFils++;
 					}
 				}
-				if (nbFils == 0 && !c.getList().get(i).contains("SEQ")) {
-					leaf.add(new Node(Config.labels.get(i), c.getWeight()));
+				if (nbFils == 0 && !c.getList().get(i).contains("SEQ")) {	//PUT HERE OR NOT.
+					if(Config.labels.get(i).contains("SL")){
+						leaf.add(new SETNode(Config.labels.get(i), c.getWeight()));
+					}else{
+						leaf.add(new Node(Config.labels.get(i), c.getWeight()));
+					}
 					nameLeaf.add(Config.labels.get(i));
 				}
 			}
