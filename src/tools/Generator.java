@@ -73,11 +73,11 @@ public class Generator {
 			if (leaf.get(i).getType().equals(son)) {
 				if(type.contains("SL")){
 					SETNode n = new SETNode(type, c.getWeight());
-					n.addFils(Node.clone(leaf.get(i)));
+					n.addFils(ToolNode.clone(leaf.get(i)));
 					list.add(n);
 				}else{
 					Node n = new Node(type, c.getWeight());
-					n.addFils(Node.clone(leaf.get(i)));
+					n.addFils(ToolNode.clone(leaf.get(i)));
 					list.add(n);
 				}
 			}else{
@@ -86,7 +86,7 @@ public class Generator {
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
 							Node n = new Node(type,c.getWeight());
-							n.addFils(Node.clone(mainList.get(0).get(i1)));
+							n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
 							list.add(n);
 						}
 					}
@@ -107,8 +107,8 @@ public class Generator {
 				Node n = list.get(i);
 				for (int z = 0; z < leaf.size(); z++) {
 					if (leaf.get(z).getType().equals(son)) {
-						Node n2 = Node.clone(n);
-						n2.addFils(Node.clone(leaf.get(z)));
+						Node n2 = ToolNode.clone(n);
+						n2.addFils(ToolNode.clone(leaf.get(z)));
 						if (j == sons.size() - 1) {
 							constructers.add(n2);
 							tmp.add(n2);
@@ -116,8 +116,8 @@ public class Generator {
 							list.add(n2);
 						}
 					} else if (nameLeaf.contains(son)) {
-						Node n2 = Node.clone(n);
-						Node term = Node.clone(leaf.get(z));
+						Node n2 = ToolNode.clone(n);
+						Node term = ToolNode.clone(leaf.get(z));
 						term.setType(son);
 						n2.addFils(term);
 						if (j == sons.size() - 1) {
@@ -129,8 +129,8 @@ public class Generator {
 					} else if (Config.labels.contains(son)) {
 						for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 							if(mainList.get(0).get(i).getType().equals(son)){
-								Node n2 = Node.clone(n);
-								n2.addFils(Node.clone(mainList.get(0).get(i)));
+								Node n2 = ToolNode.clone(n);
+								n2.addFils(ToolNode.clone(mainList.get(0).get(i)));
 								if (j == sons.size() - 1) {
 									constructers.add(n2);
 									tmp.add(n2);

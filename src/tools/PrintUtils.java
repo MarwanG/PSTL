@@ -28,13 +28,16 @@ public class PrintUtils {
 					listAll.addAll(Generator.table.get(Config.size));
 			}
 			
-			
-			
-			listAll = Node.removeZeros(listAll);
+			System.out.println("Taille = " + listAll.size());
+			listAll = ToolNode.SETTreatement(listAll);		
 			System.out.println("final list = " + listAll);
-			listAll = ToolNode.tmp2(listAll);
-			
+			System.out.println("Taille = " + listAll.size());
+			listAll = ToolNode.removeZeros(listAll);
 			System.out.println("final list = " + listAll);
+			System.out.println("Taille = " + listAll.size());
+			
+			
+			
 			switch (Config.format) {
 			case "dot":
 				writer.write(ArbresToDot(listAll, Config.out));
@@ -122,7 +125,7 @@ public class PrintUtils {
 	}
 
 	private static Node labelNode(Node n, int start) {
-		Node label = Node.clone(n);
+		Node label = ToolNode.clone(n);
 		Stack<Node> stack = new Stack<Node>();
 		stack.add(label);
 		int j = start;
@@ -141,7 +144,7 @@ public class PrintUtils {
 		ArrayList<Node> list = new ArrayList<Node>();
 		int j = start;
 		for (int i = 0; i < n.size(); i++) {
-			Node label = Node.clone(n.get(i));
+			Node label = ToolNode.clone(n.get(i));
 			Stack<Node> stack = new Stack<Node>();
 			stack.add(label);
 			while (!stack.isEmpty()) {

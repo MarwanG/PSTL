@@ -13,6 +13,7 @@ import tools.NodeCompartor;
 import tools.Parser;
 import tools.PrintUtils;
 import tools.Stat;
+import tools.ToolNode;
 
 public class Main {
 
@@ -33,7 +34,8 @@ public class Main {
 				Generator.generation(Config.size);
 				PrintUtils.toFile();
 				Stat.writeStat();
-
+				
+				
 
 			} else {
 				System.err.println("The File passed as parameter doesnt exisit");
