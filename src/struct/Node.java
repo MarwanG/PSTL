@@ -98,7 +98,11 @@ public class Node {
 	 * Returns normalized label of tree.
 	 * @return
 	 */
+	
 	public String toNormalized() {
+		return ToolNode.removeZeros(this).toNormalized2();
+	}
+	public String toNormalized2() {
 		if (this.fils.size() == 0){
 			return "01";
 		}
@@ -107,19 +111,11 @@ public class Node {
 			for (int i = 0; i< this.fils.size(); i++){
 				normalizedFilsNames.add(this.fils.get(i).toNormalized());
 			}
-		//	ArrayList<String> l = (ArrayList<String>) normalizedFilsNames.clone();
 			Collections.sort(normalizedFilsNames);
 			Collections.reverse(normalizedFilsNames);
 			StringBuffer sb;
-		/*	IDEA !!!
-			if(l.equals(normalizedFilsNames)){
-				sb = new StringBuffer("0");	
-			}else{
-				sb = new StringBuffer("M0");
-			}	
-			*/
 			sb = new StringBuffer("0");	
-			
+		
 			for (int i = 0; i<normalizedFilsNames.size();i++){
 				sb.append(normalizedFilsNames.get(i));
 			}
@@ -128,7 +124,20 @@ public class Node {
 		}
 	}
 	
-
+	public boolean containsSET(){
+		if(this.getFils().isEmpty())
+			return false;
+		if(this instanceof SETNode){
+			return true;
+		}else{
+			for(int i = 0 ; i < this.getFils().size() ; i++){
+				if(this.getFils().get(i).containsSET())
+					return true;
+			}
+			return false;
+		}
+	}
+		
 	//STATIC METHODS
 
 	

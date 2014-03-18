@@ -12,10 +12,16 @@ public class ToolNode {
 		ArrayList<Node> newList = new ArrayList<Node>();
 		ArrayList<String> labels = new ArrayList<String>();
 		for(int i = 0 ; i < l.size() ; i++){
-			Node tmp = fix(l.get(i));
-			
-			if(!labels.contains(tmp.toNormalized())){
-				newList.add(tmp);
+			if(l.get(i).containsSET()){
+				if(!labels.contains(l.get(i).toNormalized())){
+					Node tmp = fix(l.get(i));
+					labels.add(tmp.toNormalized());
+					newList.add(tmp);
+				}else{
+					System.out.println("done");
+				}
+			}else{
+				newList.add(l.get(i));
 			}
 		}
 		return newList;
@@ -23,22 +29,28 @@ public class ToolNode {
 
 	public static Node fix(Node n){
 		Node tmp = n;
-		if(n instanceof SETNode){
-			ArrayList<Node> newL = new ArrayList<Node>();
-			for(int i = 0 ; i < n.getFils().size() ; i++){
-				newL.add(fix(n.getFils().get(i)));
-			}
-			String label = n.toNormalized();		
-			tmp = getNormalizedNode(label);
-			tmp.setFils(newL);
+		if(n.getFils().size() == 0){
+			return tmp;
 		}else{
 			ArrayList<Node> newL = new ArrayList<Node>();
-			for(int i = 0 ; i < n.getFils().size() ; i++){
+			for(int i = 0 ; i < tmp.getFils().size() ; i++){
 				newL.add(fix(n.getFils().get(i)));
 			}
-			tmp.setFils(newL);
+			if(tmp instanceof SETNode){
+				String label = tmp.toNormalized();
+				int weightAlone = tmp.getWeightAlone();
+				int weight = tmp.getWeight();
+				String type = tmp.getType();
+				tmp = getNormalizedNode(label);
+				tmp.setWeightAlone(weightAlone);
+				tmp.setWeight(weight);
+				tmp.setType(type);
+				tmp.setFils(newL);
+			}else{
+				tmp.setFils(newL);
+			}
+			return tmp;
 		}
-		return tmp;
 	}
 
 	

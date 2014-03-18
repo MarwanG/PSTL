@@ -35,6 +35,7 @@ public class PrintUtils {
 			listAll = ToolNode.removeZeros(listAll);
 			System.out.println("final list = " + listAll);
 			System.out.println("Taille = " + listAll.size());
+			//listAll = ToolNode.SETTreatement(listAll);		
 			
 			
 			
