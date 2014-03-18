@@ -21,10 +21,8 @@ public class Composant {
 		this.list = list;
 	}
 
-	/**
-	 * 
-	 * @return weight
-	 */
+	//GETTERS AND SETTERS.
+	
 	public int getWeight() {
 		return weight;
 	}

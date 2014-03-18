@@ -18,34 +18,17 @@ public class PrintUtils {
 			}
 			BufferedWriter writer = new BufferedWriter(new FileWriter(
 					Config.out + "." + Config.format));
-			ArrayList<Node> listAll = new ArrayList<Node>();
-			if (Config.all) {
-				for (Integer k : Generator.table.keySet()) {
-					listAll.addAll(Generator.table.get(k));
-				}
-			} else {
-				if(Generator.table.get(Config.size) != null)
-					listAll.addAll(Generator.table.get(Config.size));
-			}
 			
-			System.out.println("Taille = " + listAll.size());
-			listAll = ToolNode.SETTreatement(listAll);		
-			System.out.println("final list = " + listAll);
-			System.out.println("Taille = " + listAll.size());
-			listAll = ToolNode.removeZeros(listAll);
-			System.out.println("final list = " + listAll);
-			System.out.println("Taille = " + listAll.size());
-			//listAll = ToolNode.SETTreatement(listAll);		
 			
 			
 			
 			switch (Config.format) {
 			case "dot":
-				writer.write(ArbresToDot(listAll, Config.out));
+				writer.write(ArbresToDot(Config.finalList, Config.out));
 				writer.close();
 				break;
 			case "txt":
-				writer.write(ArbresToText(listAll));
+				writer.write(ArbresToText(Config.finalList));
 				writer.close();
 				break;
 			case "json":
@@ -54,14 +37,14 @@ public class PrintUtils {
 				break;
 
 			case "png":
-				writer.write(ArbresToDot(listAll, Config.out));
+				writer.write(ArbresToDot(Config.finalList, Config.out));
 				writer.close();
 				dotGenerator();
 				break;
 			default:
 				System.err
 						.println("unsupported format will generate the default format instead");
-				writer.write(ArbresToDot(listAll, Config.out));
+				writer.write(ArbresToDot(Config.finalList, Config.out));
 				writer.close();
 				dotGenerator();
 				break;

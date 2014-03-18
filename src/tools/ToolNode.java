@@ -17,8 +17,6 @@ public class ToolNode {
 					Node tmp = fix(l.get(i));
 					labels.add(tmp.toNormalized());
 					newList.add(tmp);
-				}else{
-					System.out.println("done");
 				}
 			}else{
 				newList.add(l.get(i));
@@ -53,20 +51,6 @@ public class ToolNode {
 		}
 	}
 
-	
-	public static ArrayList<Node> setTreatement(ArrayList<Node> l){
-		ArrayList<String> list = new ArrayList<String>();
-		for(int i = 0 ; i < l.size() ; i++){
-			String label = l.get(i).toNormalized();
-			if(!list.contains(label))
-				list.add(label);
-		}
-		ArrayList<Node> tmp = new ArrayList<Node>();
-		for(int i = 0 ; i < list.size() ; i++){
-			tmp.add(ToolNode.getNormalizedNode(list.get(i)));
-		}
-		return tmp;	
-	}
 	
 	/**
 	 * Clones N (deep cloning)

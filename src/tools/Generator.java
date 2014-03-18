@@ -19,7 +19,7 @@ public class Generator {
 	public static ArrayList<Node> list = new ArrayList<Node>();
 	public static ArrayList<String> nameLeaf = new ArrayList<String>();
 
-	public static void gen() {
+	public static void preperation() {
 		table = new HashMap<Integer, ArrayList<Node>>();
 		if (Config.verbose >= 2){
 			System.out.println("Generating possible composants");
@@ -173,9 +173,8 @@ public class Generator {
 		int start =  0;
 		while (true) {
 			if (Config.verbose >= 1) {
-				System.out.println("Generation : " + (start));
+				System.out.print("Generation : " + start);
 			}
-			System.out.println("start : " + start);
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
 			int taille = list.size();
@@ -183,6 +182,7 @@ public class Generator {
 			Collections.sort(list, new NodeCompartor());
 			
 			if(list.get(0).getWeight() > g){
+				System.out.println(" No need to continue");
 				break;
 			}
 			while (i < taille) {
@@ -196,8 +196,24 @@ public class Generator {
 				i++;
 			}
 			mainList.add(newList);
+			System.out.println(" Nb of Trees Generated : " + newList.size());
 			start++;
 		}
+	}
+	
+	
+	public static void termination(){
+		if (Config.all) {
+			for (Integer k : Generator.table.keySet()) {
+				Config.finalList.addAll(Generator.table.get(k));
+			}
+		} else {
+			if(Generator.table.get(Config.size) != null)
+				Config.finalList.addAll(Generator.table.get(Config.size));
+		}
+		
+		Config.finalList = ToolNode.SETTreatement(Config.finalList);		
+		Config.finalList = ToolNode.removeZeros(Config.finalList);
 	}
 	
 	

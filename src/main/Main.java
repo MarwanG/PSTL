@@ -1,4 +1,4 @@
-package luncher;
+package main;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,12 +26,10 @@ public class Main {
 		else
 			if (new File(Config.file).exists()) {
 				Parser.readFile(Config.file);
-				Generator.gen();
-				System.out.println("completeur : ");
-				
-				System.out.println(Generator.constructers);
+				Generator.preperation();
 				
 				Generator.generation(Config.size);
+				Generator.termination();
 				PrintUtils.toFile();
 				Stat.writeStat();
 				
