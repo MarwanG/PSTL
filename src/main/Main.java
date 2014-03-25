@@ -25,6 +25,7 @@ public class Main {
 			cmd.usage();
 		else
 			if (new File(Config.file).exists()) {
+				System.out.println("File := " + Config.file);
 				Parser.readFile(Config.file);
 				Generator.preperation();
 				

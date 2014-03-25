@@ -17,6 +17,7 @@ public class ToolNode {
 					Node tmp = fix(l.get(i));
 					labels.add(tmp.toNormalized());
 					newList.add(tmp);
+				}else{
 				}
 			}else{
 				newList.add(l.get(i));

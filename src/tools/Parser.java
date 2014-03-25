@@ -40,6 +40,7 @@ public class Parser {
 	
 	
 	private static void parseLine(String l){
+		System.out.println("parssing := " + l);
 		String obj;
 		if(l.contains("::=")){
 			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
@@ -48,10 +49,10 @@ public class Parser {
 			l = l.substring(l.indexOf("::=")+4);
 			String[] split = l.split("\\+");
 			for(int i = 0 ; i < split.length ; i++){
-				if(split[i].contains("SEQ")){
-					seqTreatment(split[i],obj);
-				}if(split[i].contains("SET")){
+				if(split[i].contains("SET")){
 					setTreatment(split[i],obj);
+				}if(split[i].contains("SEQ")){
+					seqTreatment(split[i],obj);
 				}else{
 					createComposant(split[i],obj);
 				}
@@ -78,7 +79,7 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SET", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println(newRule);
+			System.out.println("INSIDE SET " + newRule);
 			parseLine(newRule);
 		}
 		
@@ -105,7 +106,7 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SEQ", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println(newRule);
+			System.out.println("INSIDE SEQ " + newRule);
 			parseLine(newRule);
 		}
 	}
@@ -124,6 +125,7 @@ public class Parser {
 			}
 		}
 		Composant c = new Composant(w,nb,labels);
+		System.out.println(c);
 		Config.list.add(c);
 		Config.hash.get(obj).add(c);
 	}

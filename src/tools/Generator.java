@@ -180,11 +180,7 @@ public class Generator {
 			int taille = list.size();
 			int i = 0;
 			Collections.sort(list, new NodeCompartor());
-			
-			if(list.get(0).getWeight() > g){
-				System.out.println(" No need to continue");
-				break;
-			}
+
 			while (i < taille) {
 				Node tmp = list.get(i);
 				for (int j = 0; j < tmp.getFils().size(); j++) {
@@ -197,6 +193,10 @@ public class Generator {
 			}
 			mainList.add(newList);
 			System.out.println(" Nb of Trees Generated : " + newList.size());
+			if(newList.size() == 0){
+				System.out.println("No need to generate");
+				break;
+			}
 			start++;
 		}
 	}
@@ -231,13 +231,15 @@ public class Generator {
 						nbFils++;
 					}
 				}
-				if (nbFils == 0 && !c.getList().get(i).contains("SEQ")) {	//PUT HERE OR NOT.
+				if(i < c.getList().size()){
+					if (nbFils == 0 &&  !c.getList().get(i).contains("SEQ")) {	//PUT HERE OR NOT.
 					if(Config.labels.get(i).contains("SL")){
 						leaf.add(new SETNode(Config.labels.get(i), c.getWeight()));
 					}else{
 						leaf.add(new Node(Config.labels.get(i), c.getWeight()));
 					}
 					nameLeaf.add(Config.labels.get(i));
+				}
 				}
 			}
 		}
@@ -247,6 +249,7 @@ public class Generator {
 	
 	private static void addList(ArrayList<Node> list, ArrayList<Node> newList) {
 		for (int i = 0; i < list.size(); i++) {
+			if(list.get(i).getWeight() <= Config.size){
 			if (!newList.contains(list.get(i))) {
 				newList.add(list.get(i));
 				if (table.containsKey(list.get(i).getWeight())) {
@@ -259,6 +262,7 @@ public class Generator {
 					table.put(list.get(i).getWeight(), list2);
 				}
 			}
+			}
 		}
 	}
 
@@ -269,8 +273,8 @@ public class Generator {
 		}
 	}
 	
-	 private static void addToTable(Node n) {
-			if (table.containsKey(n.getWeight())) {
+	 private static void addToTable(Node n) {	
+		 if (table.containsKey(n.getWeight())) {
 				if (!table.get(n.getWeight()).contains(n))
 					table.get(n.getWeight()).add(n);
 			} else {
@@ -278,7 +282,5 @@ public class Generator {
 				list2.add(n);
 				table.put(n.getWeight(), list2);
 			}
-		}
-		
-
+	 }
 }

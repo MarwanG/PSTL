@@ -12,14 +12,19 @@ public class PrintUtils {
 
 	public static void toFile() {
 		try {
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter(
+					Config.out + "." + Config.format));
+
+			Config.finalList = ToolNode.SETTreatement(Config.finalList);		
+			Config.finalList = ToolNode.removeZeros(Config.finalList);
+			System.out.println("Final size := " + Config.finalList.size());
+		
 			if (Config.verbose >= 1) {
 				System.out.println("Generating File : " + Config.out + "."
 						+ Config.format);
 			}
-			BufferedWriter writer = new BufferedWriter(new FileWriter(
-					Config.out + "." + Config.format));
-			
-			
+
 			
 			
 			switch (Config.format) {
