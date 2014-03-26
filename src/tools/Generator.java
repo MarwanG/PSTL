@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import struct.Composant;
 import struct.Node;
+import struct.SETComposant;
 import struct.SETNode;
 
 public class Generator {
@@ -76,18 +77,30 @@ public class Generator {
 					n.addFils(ToolNode.clone(leaf.get(i)));
 					list.add(n);
 				}else{
-					Node n = new Node(type, c.getWeight());
-					n.addFils(ToolNode.clone(leaf.get(i)));
-					list.add(n);
+					if(c instanceof SETComposant){
+						SETNode n = new SETNode(type, -1);
+						n.addFils(ToolNode.clone(leaf.get(i)));
+						list.add(n);
+					}else{
+						Node n = new Node(type, c.getWeight());
+						n.addFils(ToolNode.clone(leaf.get(i)));
+						list.add(n);
+					}			
 				}
 			}else{
 				if (Config.labels.contains(son)) {
 					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
-							Node n = new Node(type,c.getWeight());
-							n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
-							list.add(n);
+							if(c instanceof SETComposant){
+								SETNode n = new SETNode(type, -1);
+								n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
+								list.add(n);
+							}else{
+								Node n = new Node(type,c.getWeight());
+								n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
+								list.add(n);
+							}				
 						}
 					}
 				}
@@ -128,9 +141,9 @@ public class Generator {
 						}
 					} else if (Config.labels.contains(son)) {
 						for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
-							if(mainList.get(0).get(i).getType().equals(son)){
+							if(mainList.get(0).get(i1).getType().equals(son)){
 								Node n2 = ToolNode.clone(n);
-								n2.addFils(ToolNode.clone(mainList.get(0).get(i)));
+								n2.addFils(ToolNode.clone(mainList.get(0).get(i1)));
 								if (j == sons.size() - 1) {
 									constructers.add(n2);
 									tmp.add(n2);
@@ -211,9 +224,13 @@ public class Generator {
 			if(Generator.table.get(Config.size) != null)
 				Config.finalList.addAll(Generator.table.get(Config.size));
 		}
-		
-		Config.finalList = ToolNode.SETTreatement(Config.finalList);		
+		System.out.println("size = " + Config.finalList.size());
+		Config.finalList = ToolNode.SETTreatement(Config.finalList);	
+
+		System.out.println("size = " + Config.finalList.size());
 		Config.finalList = ToolNode.removeZeros(Config.finalList);
+
+		System.out.println("size = " + Config.finalList.size());
 	}
 	
 	
@@ -223,7 +240,7 @@ public class Generator {
 			for (int j = 0; j < list.size(); j++) {
 				Composant c = list.get(j);
 				if (Config.verbose >= 1) {
-					System.out.println("\t" + c.toString());
+					System.out.println("\t" + c.toString() + " type : " + c.getClass().getName());
 				}
 				int nbFils = 0;
 				for (int z = 0; z < c.getList().size(); z++) {
