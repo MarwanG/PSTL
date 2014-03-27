@@ -32,7 +32,7 @@
 
   <target name = "jar" depends="compile" description="creates a runnable jar">
 	        <manifest file = "MANIFEST.MF">
-	            <attribute name = "Main-Class" value = "luncher.Main"/>
+	            <attribute name = "Main-Class" value = "main.Main"/>
 	            <attribute name = "Class-Path" value = "."/>
 	        </manifest>
 		<fileset dir="build" includes="**/*.class" />  

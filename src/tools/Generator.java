@@ -42,6 +42,7 @@ public class Generator {
 		for (int j = 0; j < list.size(); j++) {
 			Composant c = list.get(j);
 			ArrayList<Node> x = generateConstructers(c, Config.labels.get(0));
+			System.out.println("complet " + x.toString());
 			for(int z = 0 ; z < x.size() ; z++){
 				if(!mainList.get(0).contains(x.get(z)))
 					mainList.get(0).add(x.get(z));
