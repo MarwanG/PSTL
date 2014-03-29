@@ -30,11 +30,13 @@ public class Generator {
 		}
 		generateLeafs();
 	
+		System.out.println("leaf " + leaf);
+		
 		if (Config.verbose >= 2){
 			System.out.println("DONE");
 		}
 		if (Config.verbose >= 2){
-			System.out.print("Generating possible Constructors.....");
+			System.out.print("Generating possible Constructors..... \n");
 		}
 		
 		mainList.add(new ArrayList<Node>());
@@ -87,8 +89,7 @@ public class Generator {
 						list.add(n);
 					}			
 				}
-			}else{
-				if (Config.labels.contains(son)) {
+			}else if (Config.labels.contains(son)) {
 					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
@@ -103,8 +104,23 @@ public class Generator {
 							}				
 						}
 					}
+				}else if (son.equals("Leaf")){
+					System.out.println("in the else what should i do i have a : " + son + " c : " + c);
+					for(int i2 = 0 ; i2 < leaf.size() ; i2++){
+						if(leaf.get(i2).getType().equals(type)){
+							if(c instanceof SETComposant){
+								SETNode n = new SETNode(type, -1);
+								n.addFils(new Node("non",leaf.get(i2).getWeight()));
+								list.add(n);
+							}else{
+								Node n = new Node(type, c.getWeight());
+								n.addFils(new Node("non",leaf.get(i2).getWeight()));
+								list.add(n);
+							}
+						}
+					}
+					
 				}
-			}
 		}
 		
 		if (sons.size() == 1) {
@@ -152,6 +168,27 @@ public class Generator {
 								}
 							}
 						}
+					}else if (son.equals("Leaf")){
+						System.out.println("in the else what should i do i have a  SON2222: " + son + " c : " + c);
+						for(int i2 = 0 ; i2 < leaf.size() ; i2++){
+							if(leaf.get(i2).getType().equals(type)){
+								Node n2;
+								if(c instanceof SETComposant){
+									n2 = ToolNode.clone(n);
+								}else{
+									n2 =  ToolNode.clone(n);
+								}
+								n2.addFils(new Node("non",leaf.get(i2).getWeight()));
+								list.add(n2);
+								if (j == sons.size() - 1) {
+									constructers.add(n2);
+									tmp.add(n2);
+								} else {
+									list.add(n2);
+								}
+							}
+						}
+						
 					}
 				}
 			}
@@ -233,14 +270,15 @@ public class Generator {
 		System.out.println("size = " + Config.finalList.size());
 	}
 	
-	
+	/*
 	private static void generateLeafs(){
-		for (int i = 0; i < Config.labels.size(); i++) {
+		System.out.println("generating leafs");
+		for (int i = 0; i < Config.labels.size(); i++) {			
 			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
 			for (int j = 0; j < list.size(); j++) {
 				Composant c = list.get(j);
 				if (Config.verbose >= 1) {
-					System.out.println("\t" + c.toString() + " type : " + c.getClass().getName());
+					//System.out.println("\t" + c.toString() + " type : " + c.getClass().getName());
 				}
 				int nbFils = 0;
 				for (int z = 0; z < c.getList().size(); z++) {
@@ -248,6 +286,9 @@ public class Generator {
 						nbFils++;
 					}
 				}
+				System.out.println(Config.labels.get(i));
+				System.out.println("size == " + nbFils);
+				System.out.println("i = " + i + " c size = " + c.getList().size());
 				if(i < c.getList().size()){
 					if (nbFils == 0 &&  !c.getList().get(i).contains("SEQ")) {	//PUT HERE OR NOT.
 					if(Config.labels.get(i).contains("SL")){
@@ -257,12 +298,40 @@ public class Generator {
 					}
 					nameLeaf.add(Config.labels.get(i));
 				}
+				}else{
 				}
 			}
 		}
-
 	}
+	*/
 	
+	private static void generateLeafs(){
+		for(int i = 0 ; i < Config.labels.size() ; i++){
+			ArrayList<Composant> list = Config.hash.get(Config.labels.get(i));
+			int j = 0 ;
+			while(j < list.size()){
+				Composant c = list.get(j);
+
+				System.out.println(j + " c = " + c);
+				if(c.getList().size() == 1){
+					if(c.getList().get(0).equals("Leaf")){
+						if(Config.labels.get(i).contains("SL")){
+								leaf.add(new SETNode(Config.labels.get(i), c.getWeight()));
+							}else{
+								leaf.add(new Node(Config.labels.get(i), c.getWeight()));
+							}
+							nameLeaf.add(Config.labels.get(i));
+							list.remove(j);
+						}else{
+							j++;
+						}
+					}else{
+						//System.out.println("here");
+						j++;
+					}
+				}
+			}
+		}
 	
 	private static void addList(ArrayList<Node> list, ArrayList<Node> newList) {
 		for (int i = 0; i < list.size(); i++) {

@@ -72,7 +72,7 @@ public class Node {
 	public ArrayList<Node> AddLevel(Node base){
 		ArrayList<Node> list = new ArrayList<Node>();
 		for(int i = 0 ; i < fils.size() ; i++){
-			if(fils.get(i).getFils().size() == 0){
+			if(fils.get(i).getFils().size() == 0  && !fils.get(i).getType().equals("non")){
 				Node tmp =  ToolNode.clone(this);
 				tmp.setWeight(tmp.getWeight() + base.weight - tmp.getFils().get(i).getWeight());
 				tmp.getFils().set(i, base);
