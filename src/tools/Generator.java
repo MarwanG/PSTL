@@ -54,6 +54,8 @@ public class Generator {
 			System.out.println("OK");
 		}
 		Collections.sort(Generator.constructers, new NodeCompartor());
+		System.out.println("possible constructers");
+		System.out.println(Generator.constructers);
 		
 		int i = 0;
 		while(i < mainList.get(0).size()){		
@@ -262,12 +264,20 @@ public class Generator {
 				Config.finalList.addAll(Generator.table.get(Config.size));
 		}
 		System.out.println("size = " + Config.finalList.size());
+		
 		Config.finalList = ToolNode.SETTreatement(Config.finalList);	
-
+		System.out.println(Config.finalList.get(0));
+		
+		
 		System.out.println("size = " + Config.finalList.size());
+		
 		Config.finalList = ToolNode.removeZeros(Config.finalList);
-
+		System.out.println(Config.finalList.get(0));
+		
 		System.out.println("size = " + Config.finalList.size());
+		System.out.println(Config.finalList.get(0));
+		
+
 	}
 	
 	/*
@@ -316,9 +326,13 @@ public class Generator {
 				if(c.getList().size() == 1){
 					if(c.getList().get(0).equals("Leaf")){
 						if(Config.labels.get(i).contains("SL")){
-								leaf.add(new SETNode(Config.labels.get(i), c.getWeight()));
+								SETNode s = new SETNode(Config.labels.get(i), c.getWeight());
+								leaf.add(s);
+								addToTable(s);
 							}else{
-								leaf.add(new Node(Config.labels.get(i), c.getWeight()));
+								Node n = new Node(Config.labels.get(i), c.getWeight());
+								leaf.add(n);
+								addToTable(n);
 							}
 							nameLeaf.add(Config.labels.get(i));
 							list.remove(j);
