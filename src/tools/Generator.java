@@ -36,7 +36,7 @@ public class Generator {
 			System.out.println("DONE");
 		}
 		if (Config.verbose >= 2){
-			System.out.print("Generating possible Constructors..... \n");
+			System.out.print("Generating possible Constructors..... ");
 		}
 		
 		mainList.add(new ArrayList<Node>());
@@ -266,16 +266,12 @@ public class Generator {
 		System.out.println("size = " + Config.finalList.size());
 		
 		Config.finalList = ToolNode.SETTreatement(Config.finalList);	
-		System.out.println(Config.finalList.get(0));
-		
-		
+	
 		System.out.println("size = " + Config.finalList.size());
 		
 		Config.finalList = ToolNode.removeZeros(Config.finalList);
-		System.out.println(Config.finalList.get(0));
 		
 		System.out.println("size = " + Config.finalList.size());
-		System.out.println(Config.finalList.get(0));
 		
 
 	}

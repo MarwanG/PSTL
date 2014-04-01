@@ -41,7 +41,7 @@ public class Parser {
 	
 	
 	private static void parseLine(String l){
-		System.out.println("parssing := " + l);
+		System.out.println("parsing := " + l);
 		String obj;
 		if(l.contains("::=")){
 			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
@@ -85,7 +85,6 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SET", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println("INSIDE SET " + newRule);
 			parseLine(newRule);
 		}
 		
@@ -117,7 +116,6 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SEQ", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println("INSIDE SEQ " + newRule);
 			parseLine(newRule);
 		}
 	}
@@ -142,12 +140,12 @@ public class Parser {
 		}
 		if(s.contains("*")){
 			Composant c = new Composant(w,nb,labels);
-			System.out.println(c);
+		//	System.out.println(c);
 			Config.list.add(c);
 			Config.hash.get(obj).add(c);
 		}else if(s.contains("&")){
 			SETComposant c = new SETComposant(w,nb,labels);	
-			System.out.println(c);
+	//		System.out.println(c);
 			Config.list.add(c);
 			Config.hash.get(obj).add(c);
 		}		
