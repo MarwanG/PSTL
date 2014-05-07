@@ -23,18 +23,12 @@ public class Generator {
 	public static void preperation() {
 		table = new HashMap<Integer, ArrayList<Node>>();
 		if (Config.verbose >= 2){
-			System.out.println("Generating possible composants");
-		}
-		if (Config.verbose >= 1){
-			System.out.println("List of Composants :");
+			System.out.println("========================================");
+			System.out.println("Generating possible Atoms");
 		}
 		generateLeafs();
 	
-		System.out.println("leaf " + leaf);
-		
-		if (Config.verbose >= 2){
-			System.out.println("DONE");
-		}
+	
 		if (Config.verbose >= 2){
 			System.out.print("Generating possible Constructors..... ");
 		}
@@ -54,8 +48,6 @@ public class Generator {
 			System.out.println("OK");
 		}
 		Collections.sort(Generator.constructers, new NodeCompartor());
-		System.out.println("possible constructers");
-		System.out.println(Generator.constructers);
 		
 		int i = 0;
 		while(i < mainList.get(0).size()){		
@@ -107,7 +99,6 @@ public class Generator {
 						}
 					}
 				}else if (son.equals("Leaf")){
-					System.out.println("in the else what should i do i have a : " + son + " c : " + c);
 					for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 						if(leaf.get(i2).getType().equals(type)){
 							if(c instanceof SETComposant){
@@ -171,7 +162,6 @@ public class Generator {
 							}
 						}
 					}else if (son.equals("Leaf")){
-						System.out.println("in the else what should i do i have a  SON2222: " + son + " c : " + c);
 						for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 							if(leaf.get(i2).getType().equals(type)){
 								Node n2;
@@ -225,7 +215,7 @@ public class Generator {
 		int start =  0;
 		while (true) {
 			if (Config.verbose >= 1) {
-				System.out.print("Generation : " + start);
+				System.out.print("Generation : " + start + " ->");
 			}
 			ArrayList<Node> newList = new ArrayList<Node>();
 			ArrayList<Node> list = mainList.get(start);
@@ -246,7 +236,7 @@ public class Generator {
 			mainList.add(newList);
 			System.out.println(" Nb of Trees Generated : " + newList.size());
 			if(newList.size() == 0){
-				System.out.println("No need to generate");
+				System.out.println("========================================");
 				break;
 			}
 			start++;
@@ -255,6 +245,7 @@ public class Generator {
 	
 	
 	public static void termination(){
+		System.out.println("Terminating");
 		if (Config.all) {
 			for (Integer k : Generator.table.keySet()) {
 				Config.finalList.addAll(Generator.table.get(k));
@@ -263,15 +254,13 @@ public class Generator {
 			if(Generator.table.get(Config.size) != null)
 				Config.finalList.addAll(Generator.table.get(Config.size));
 		}
-		System.out.println("size = " + Config.finalList.size());
 		
 		Config.finalList = ToolNode.SETTreatement(Config.finalList);	
 	
-		System.out.println("size = " + Config.finalList.size());
 		
 		Config.finalList = ToolNode.removeZeros(Config.finalList);
 		
-		System.out.println("size = " + Config.finalList.size());
+		System.out.println("Number of trees found = " + Config.finalList.size());
 		
 
 	}
@@ -318,7 +307,7 @@ public class Generator {
 			while(j < list.size()){
 				Composant c = list.get(j);
 
-				System.out.println(j + " c = " + c);
+				System.out.println("\t " + c);
 				if(c.getList().size() == 1){
 					if(c.getList().get(0).equals("Leaf")){
 						if(Config.labels.get(i).contains("SL")){

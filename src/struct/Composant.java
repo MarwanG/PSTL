@@ -49,7 +49,7 @@ public class Composant {
 
 	@Override
 	public String toString() {
-		return "Composant [weight=" + weight + ", Label= " + list + "]";
+		return "Atom : [weight=" + weight + ", Label= " + list + "]";
 	}
 
 }

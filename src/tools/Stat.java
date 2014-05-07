@@ -14,7 +14,7 @@ public class Stat {
 		if (Config.stat)
 			try {
 				if (Config.verbose >= 1) {
-					System.out.println("Generating statisques file : stat.txt");
+					System.out.println("Generating statistics file : stat.txt");
 				}
 				BufferedWriter writer = new BufferedWriter(new FileWriter(
 						"stat.txt"));

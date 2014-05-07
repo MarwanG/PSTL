@@ -41,7 +41,7 @@ public class Parser {
 	
 	
 	private static void parseLine(String l){
-		System.out.println("parsing := " + l);
+		System.out.println("\t" + l);
 		String obj;
 		if(l.contains("::=")){
 			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
