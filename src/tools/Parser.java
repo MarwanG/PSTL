@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import struct.Composant;
+import struct.SETComposant;
 
 public class Parser {
 
@@ -40,7 +41,7 @@ public class Parser {
 	
 	
 	private static void parseLine(String l){
-		System.out.println("parssing := " + l);
+		System.out.println("parsing := " + l);
 		String obj;
 		if(l.contains("::=")){
 			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
@@ -61,7 +62,12 @@ public class Parser {
 	}
 
 	private static void setTreatment(String s, String obj) {
-		String [] split = s.split("\\*");
+		String [] split = null;
+		if(s.contains("*")){
+			split = s.split("\\*");
+		}else if(s.contains("&")){
+			split = s.split("\\&");
+		}
 		String newComp = "";
 		HashMap<String,String> hash = new HashMap<String,String>(); 
 		for(int i = 0 ; i < split.length ; i++){
@@ -79,7 +85,6 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SET", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println("INSIDE SET " + newRule);
 			parseLine(newRule);
 		}
 		
@@ -88,7 +93,12 @@ public class Parser {
 	private static int count = 0 ;
 	
 	private static void seqTreatment(String s,String obj){
-		String [] split = s.split("\\*");
+		String [] split = null;
+		if(s.contains("*")){
+			split = s.split("\\*");
+		}else if(s.contains("&")){
+			split = s.split("\\&");
+		}
 		String newComp = "";
 		HashMap<String,String> hash = new HashMap<String,String>(); 
 		for(int i = 0 ; i < split.length ; i++){
@@ -106,14 +116,18 @@ public class Parser {
 			res = res.replaceFirst("\\(", "").replaceFirst("SEQ", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
 			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
-			System.out.println("INSIDE SEQ " + newRule);
 			parseLine(newRule);
 		}
 	}
 	
 	
 	private static void createComposant(String s, String obj) {
-		String[] split = s.split("\\*");
+		String [] split = null;
+		if(s.contains("*")){
+			split = s.split("\\*");
+		}else if(s.contains("&")){
+			split = s.split("\\&");
+		}
 		int nb = 0;
 		int w = 0;
 		ArrayList<String> labels = new ArrayList<String>();
@@ -124,10 +138,17 @@ public class Parser {
 				labels.add(split[i].replace(" ", "").replace(";",""));
 			}
 		}
-		Composant c = new Composant(w,nb,labels);
-		System.out.println(c);
-		Config.list.add(c);
-		Config.hash.get(obj).add(c);
+		if(s.contains("*")){
+			Composant c = new Composant(w,nb,labels);
+		//	System.out.println(c);
+			Config.list.add(c);
+			Config.hash.get(obj).add(c);
+		}else if(s.contains("&")){
+			SETComposant c = new SETComposant(w,nb,labels);	
+	//		System.out.println(c);
+			Config.list.add(c);
+			Config.hash.get(obj).add(c);
+		}		
 	}
 	
 	
