@@ -24,9 +24,8 @@
 
   <target name="run" depends="compile" description="run examples">
     <echo>================ The Main ================</echo>
-    <java classname="main.Main" classpath="${jcommander}:${build}">
-      <arg line="-n 6 -gram examples/nary.spec"/>
-    </java>
+    <java classname="main.Main" classpath="${jcommander}:${build}"/>
+
   </target>
 
 
