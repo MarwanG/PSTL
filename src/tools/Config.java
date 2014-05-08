@@ -20,13 +20,13 @@ public class Config {
 	public static ArrayList<Node> finalList  = new ArrayList<Node>();
 
 	@Parameter(names = "-n", description = "Size of required trees")
-	public static int size = 6;
+	public static int size = 7;
 	@Parameter(names = "-gram", description = "Path for grammer file to be used")
-	public static String file = "examples/5.spec";
+	public static String file = "examples/binary.spec";
 	@Parameter(names = "-out", description = "Name of file to be used for output")
 	public static String out = "Tree";
 	@Parameter(names = "-format", description = "Format of output: json,dot,png(certain systems),txt")
-	public static String format = "dot";
+	public static String format = "png";
 	@Parameter(names = "-verbose", description = "Level of verbosity")
 	public static int verbose = 2;
 	@Parameter(names = "-all", description = "Generation to return", arity = 1)
