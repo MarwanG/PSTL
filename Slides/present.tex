@@ -1,0 +1,298 @@
+\documentclass{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+\pdfcompresslevel0
+
+\usepackage{color}
+
+\addtobeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber
+
+\hspace{10em}\\}
+
+\usepackage{listings}
+
+\title{Programmation générique basée sur les classes combinatoires}
+\author{Marwan Ghanem  Charles Huyghues-Despointes}
+\date{\today}
+
+% slides number
+\defbeamertemplate*{footline}{shadow theme}
+{%
+  \leavevmode%
+  \hbox{
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{}%
+    \usebeamerfont{title in head/foot}\insertshorttitle%
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\beamertemplatenavigationsymbolsempty
+
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+\begin{frame}{Objectif}
+
+\begin{itemize}
+\item faire un lien entre les grammaires génératives et l'analyse combinatoire
+\item décrire récursivement des structures discrètes arborescentes
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Rappel d'analyse combinatoire.}
+\emph{Definition:} \newline
+Nous appellerons classe combinatoire ou simplement classe un ensemble fini ou dénombrable
+muni d'une fonction de taille satisfaisant les conditions suivantes :
+\begin{itemize}
+\item la taille de tout élèment est positive ou nulle
+\item pour toute taille donnée, le nombre d'élèment de cette taille est fini
+\end{itemize}
+
+soit C une classe, la taille d'un élèment c $\in$  C se notera |c|, de plus on notera aussi Cn le sousEensemble
+de C des élèments de taille n.
+yn dé(nit de plus la classe atomique Z contenant un unique élement de taille 1.
+
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Rappel d'analyse combinatoire}
+
+Operations usuelles
+\begin{itemize}
+\item Union disjointe ( $C + B$ )
+\item Produit cartésien ( $C \times B$ )
+\item Séquence ( $Seq(C)$ )
+\item MSet ( $MSet(C)$ )
+\item PSet ( $PSet(C)$ )
+\item Cycle ( $Cyc(C)$ )
+\end{itemize}
+%%%\medskip
+%%\begin{figure}[h]
+%%  \centering
+%%  \includegraphics[scale=0.6]{schemaOjacare.png}
+%%  \caption{La génération de code d'O'Jacaré}
+%%\end{figure}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Vers un encodage des classes combinatoires }
+Trouver une grammaire simple pour encoder les classes combinatoire. \newline
+\begin{itemize}
+\item
+\begin{tabbing}
+\textbf{Classe combinatoire :} \\
+\hspace{0.5cm} \= \kill
+\> BinNode = Z + Z $\times$ BinNode $\times$ BinNode \\  %%je modifie ici on avait mis * a place de times
+\end{tabbing}
+
+
+\item
+\begin{tabbing}
+\textbf{Notre Grammaire :} \\
+\hspace{0.5cm} \= \kill
+\> BinNode ::= Leaf * <1> + BinNode * BinNode * <1>; \\
+\end{tabbing}
+\end{itemize} 
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}{Vers un encodage des classe combinatoires}
+  
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\emph{Nom} & \emph{Analyse combinatoire} & \emph{Notre grammaire} \\
+\hline\hline
+Union disjointe & a + b & a + b * <0>\\\hline
+Produit cartésion & a $\times$ b & a * b * <0>\\\hline
+Séquence & Seq( a ) & SEQ( a ) * <0> \\\hline
+MSet & MSet( a )  & SET( a ) * <0> \\\hline
+Produit commutatif & a \& b & a \& b \\\hline
+Augment de taille & a $\times Z^{n}$ & a * <n> \\\hline
+PSet  & PSet( a )  & $\times$ \\\hline
+Cycle  & Set( a )  & $\times$ \\\hline
+\end{tabular} 
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{Vers un encodage des classes combinatoires}
+Des nouveautés introduites :
+\begin{itemize}
+\item le produit commutatif
+\item l'associativité ( < -1 > )
+\end{itemize}
+$\rightarrow$ la simplification du MSet et du Seq
+\end{frame}
+
+
+\begin{frame}{Exemple : Les arbres de Motzkin}
+Arbres de Motzkin : arbres contenant des noeuds binaires ou unaires :
+\begin{itemize}
+\item
+\begin{tabbing}
+\textbf{Classe combinatoire :} \\
+\hspace{0.5cm} \= \kill
+\> M = Z + Z $\times$ M + Z $\times$ M $\times$ M \\
+\end{tabbing}
+\item
+\begin{tabbing}
+\textbf{Notre Grammaire :} \\
+\hspace{0.5cm} \= \kill
+\hspace{0.5cm} 
+\> M ::= Leaf * <1> + M * <1> + M * M * <1>; \\
+\end{tabbing}
+\end{itemize} 
+\end{frame}
+
+
+\begin{frame}{Exemple : les Arbres de Motzkin}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.35]{mtzkin1.png}
+  \caption{Arbre de taille 5}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Exemple : les Arbres de Motzkin}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.18]{mtzkinall.png}
+  \caption{Arbres de Mtzkin}
+\end{figure}
+Nombres de Moltkin : 1, 1, 2, 4, 9, 21, 51, 127\ldots
+\end{frame}
+
+
+\begin{frame}{Exemple: Partition et compostion d'entiers}
+\begin{tabbing}
+\hspace{1cm} \= \kill
+\> \textbf{Composition et partition de 4}\\
+\hspace{5cm} \= \kill
+Composition \> Partition \\ 
+
+$ 1 + 1 + 1 + 1 $ \> $ 1 +1 +1 +1 $\\
+$ 1 + 1 + 2 $ \> $ 1 + 1 + 2 $\\
+$ 1 + 2 + 1 $ \\
+$ 2 + 1 + 1 $ \\
+$ 2 + 2 $ \> $ 2 + 2 $ \\
+$ 1 + 3 $ \> $ 1 + 3 $\\
+$ 3 + 1 $ \\
+$ 4 $ \> $ 4 $\\
+\end{tabbing}
+\end{frame}
+
+\begin{frame}{Exemple: Partition et composition d'entiers}
+\textbf{Composition :}\\
+\begin{itemize}
+\item
+\begin{tabbing}
+Classe combinatoire : \\
+\hspace{0.5cm} \= \kill
+\> C = Seq(Seq$_{>0}$(Z)) \\
+\end{tabbing}
+\item
+\begin{tabbing}
+Notre Grammaire : \\
+\hspace{0.5cm} \= \kill
+\hspace{0.5cm} 
+\> P ::= Leaf * <1> + SEQ(E) * <1>; \\
+\> E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+\end{tabbing}
+\end{itemize} 
+\textbf{Partition :}
+\begin{itemize}
+\item
+\begin{tabbing}
+Classe combinatoire : \\
+\hspace{0.5cm} \= \kill
+\> C = Set(Seq$_{>0}$(Z)) \\
+\end{tabbing}
+\item
+\begin{tabbing}
+Notre Grammaire : \\
+\hspace{0.5cm} \= \kill
+\hspace{0.5cm} 
+\> P ::= Leaf * <1> + SET(E) * <1>; \\
+\> E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+\end{tabbing}
+\end{itemize} 
+\end{frame}
+
+\begin{frame}{Exemple: Partition et composition d'entiers}
+ARBRES DE LA PARTITION DE 4
+\end{frame}
+
+\begin{frame}{Et après \ldots}
+\begin{itemize}
+\item Génération automatique de code
+\item Comparateur d'Arbre et de Grammaire
+\item Génération aléatoire d'arbre de très grande taille
+\end{itemize}
+\end{frame}
+
+%% \begin{frame}{Bibliographie}
+  
+%%   \begin{thebibliography}{9}
+%%   \bibitem{amato2013localizing}
+%%     Amato, Gianluca and Scozzari, Francesca,
+%%     \emph{Localizing widening and narrowing}.
+%%     Static Analysis, Springer.
+%%     pages 25--42,
+%%     2013.
+
+%%   \bibitem{halbwachs2012decreasing}
+%%     Halbwachs, Nicolas and Henry, Julien,
+%%     \emph{When the decreasing sequence fails}.
+%%     Static Analysis, Springer.
+%%     pages 198--213,
+%%     2012.
+%%   \end{thebibliography}
+
+%% \end{frame}
+
+\end{document}
+
