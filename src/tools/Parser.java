@@ -24,6 +24,7 @@ public class Parser {
 			br = new BufferedReader(new FileReader(file));
 			while ((sCurrentLine = br.readLine()) != null) {
 				if(!sCurrentLine.startsWith("//") && !sCurrentLine.isEmpty()){
+					sCurrentLine = sCurrentLine.replace(" ", "");
 					parseLine(sCurrentLine);
 				}else{			
 				}
@@ -47,7 +48,7 @@ public class Parser {
 			obj = l.substring(0, l.indexOf("::=")).replace(" ", "");
 			Config.labels.add(obj);
 			Config.hash.put(obj, new ArrayList<Composant>());
-			l = l.substring(l.indexOf("::=")+4);
+			l = l.substring(l.indexOf("::=")+3);
 			String[] split = l.split("\\+");
 			for(int i = 0 ; i < split.length ; i++){
 				if(split[i].contains("SET")){
@@ -84,7 +85,7 @@ public class Parser {
 			String res = hash.get(e);
 			res = res.replaceFirst("\\(", "").replaceFirst("SET", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
-			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
+			String newRule = e + "::=" + res + " * <-1> + " + res +" * "+e +" * <-1>;";
 			parseLine(newRule);
 		}
 		
@@ -115,7 +116,7 @@ public class Parser {
 			String res = hash.get(e);
 			res = res.replaceFirst("\\(", "").replaceFirst("SEQ", "").replace(" ", "");
 			res = res.substring(0,res.length()-1);
-			String newRule = e + "::= " + res + " * <-1> + " + res +" * "+e +" * <-1>;";
+			String newRule = e + "::=" + res + " * <-1> + " + res +" * "+e +" * <-1>;";
 			parseLine(newRule);
 		}
 	}

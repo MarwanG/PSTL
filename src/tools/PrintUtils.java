@@ -63,6 +63,7 @@ public class PrintUtils {
 		ArrayList<Node> tmp = labelNode(list, 0);
 		res = "digraph " + graphName + "{  \n";
 		for (int i = 0; i < tmp.size(); i++) {
+			
 			res += tmp.get(i).toDot();
 		}
 		res += "\n }";

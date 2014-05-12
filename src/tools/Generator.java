@@ -27,6 +27,8 @@ public class Generator {
 			System.out.println("Generating possible Atoms");
 		}
 		generateLeafs();
+		
+		System.out.println("LEafs : " + leaf);
 	
 	
 		if (Config.verbose >= 2){
@@ -66,8 +68,10 @@ public class Generator {
 		
 		//First Son
 		String son = sons.get(0);
+		boolean found = false;
 		for (int i = 0; i < leaf.size(); i++) {
-			if (leaf.get(i).getType().equals(son)) {
+			if (leaf.get(i).getType().contains(son)) {
+				found = true;
 				if(type.contains("SL")){
 					SETNode n = new SETNode(type, c.getWeight());
 					n.addFils(ToolNode.clone(leaf.get(i)));
@@ -83,7 +87,10 @@ public class Generator {
 						list.add(n);
 					}			
 				}
-			}else if (Config.labels.contains(son)) {
+			}
+		}
+			if(!found){
+			if (Config.labels.contains(son)) {
 					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
@@ -114,8 +121,8 @@ public class Generator {
 					}
 					
 				}
-		}
 		
+			}
 		if (sons.size() == 1) {
 			constructers.addAll(list);
 			tmp.addAll(list);

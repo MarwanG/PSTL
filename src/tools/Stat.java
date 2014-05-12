@@ -19,7 +19,9 @@ public class Stat {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(
 						"stat.txt"));
 				writer.write("Generation , nb of trees \n");
+				 
 				for (int i = 0; i < Generator.mainList.size(); i++) {
+					
 					writer.write(i + " , " + Generator.mainList.get(i).size()
 							+ "\n");
 				}
