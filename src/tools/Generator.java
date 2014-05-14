@@ -86,11 +86,11 @@ public class Generator {
 						Node n = new Node(type, c.getWeight());
 						n.addFils(ToolNode.clone(leaf.get(i)));
 						list.add(n);
-					}			
+					}	
 				}
 			}
 		}
-		if(!found){
+			if(!found){
 			if (Config.labels.contains(son)) {
 					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
