@@ -28,7 +28,7 @@ public class Generator {
 		}
 		generateLeafs();
 		
-		System.out.println("LEafs : " + leaf);
+
 	
 	
 		if (Config.verbose >= 2){
@@ -77,15 +77,16 @@ public class Generator {
 					n.addFils(ToolNode.clone(leaf.get(i)));
 					list.add(n);
 				}else{
-					if(c instanceof SETComposant){
-						SETNode n = new SETNode(type, -1);
-						n.addFils(ToolNode.clone(leaf.get(i)));
-						list.add(n);
-					}else{
+					//if(c instanceof SETComposant){
+					//	System.out.println("here");
+					//	SETNode n = new SETNode(type, -1);
+					//	n.addFils(ToolNode.clone(leaf.get(i)));
+					//	list.add(n);
+					//}else{
 						Node n = new Node(type, c.getWeight());
 						n.addFils(ToolNode.clone(leaf.get(i)));
 						list.add(n);
-					}			
+					//}			
 				}
 			}
 		}
@@ -95,10 +96,11 @@ public class Generator {
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
 						if(mainList.get(0).get(i1).getType().equals(son)){
 							if(c instanceof SETComposant){
+								System.out.println("here");
 								SETNode n = new SETNode(type, -1);
 								n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
 								list.add(n);
-							}else{
+							}else{;
 								Node n = new Node(type,c.getWeight());
 								n.addFils(ToolNode.clone(mainList.get(0).get(i1)));
 								list.add(n);
@@ -108,15 +110,15 @@ public class Generator {
 				}else if (son.equals("Leaf")){
 					for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 						if(leaf.get(i2).getType().equals(type)){
-							if(c instanceof SETComposant){
-								SETNode n = new SETNode(type, -1);
-								n.addFils(new Node("non",leaf.get(i2).getWeight()));
-								list.add(n);
-							}else{
+						//	if(c instanceof SETComposant){
+						//		SETNode n = new SETNode(type, -1);
+					//			n.addFils(new Node("non",leaf.get(i2).getWeight()));
+					//			list.add(n);
+					//		}else{
 								Node n = new Node(type, c.getWeight());
 								n.addFils(new Node("non",leaf.get(i2).getWeight()));
 								list.add(n);
-							}
+							//}
 						}
 					}
 					
@@ -128,11 +130,13 @@ public class Generator {
 			tmp.addAll(list);
 		}
 		
+		int counter = 0;
 		//Rest of the sons
 		for (int j = 1; j < sons.size(); j++) {
 			son = sons.get(j);
 			int taille = list.size();
-			for (int i = 0; i < taille; i++) {
+			for (int i = counter; i < taille; i++) {
+				counter=0;
 				Node n = list.get(i);
 				for (int z = 0; z < leaf.size(); z++) {
 					if (leaf.get(z).getType().equals(son)) {
@@ -143,6 +147,7 @@ public class Generator {
 							tmp.add(n2);
 						} else {
 							list.add(n2);
+							counter++;
 						}
 					} else if (nameLeaf.contains(son)) {
 						Node n2 = ToolNode.clone(n);
@@ -154,6 +159,7 @@ public class Generator {
 							tmp.add(n2);
 						} else {
 							list.add(n2);
+							counter++;
 						}
 					} else if (Config.labels.contains(son)) {
 						for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
@@ -165,6 +171,7 @@ public class Generator {
 									tmp.add(n2);
 								} else {
 									list.add(n2);
+									counter++;
 								}
 							}
 						}
@@ -172,11 +179,11 @@ public class Generator {
 						for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 							if(leaf.get(i2).getType().equals(type)){
 								Node n2;
-								if(c instanceof SETComposant){
+								//if(c instanceof SETComposant){
 									n2 = ToolNode.clone(n);
-								}else{
-									n2 =  ToolNode.clone(n);
-								}
+							//	}else{
+							//		n2 =  ToolNode.clone(n);
+							//	}
 								n2.addFils(new Node("non",leaf.get(i2).getWeight()));
 								list.add(n2);
 								if (j == sons.size() - 1) {
@@ -184,6 +191,7 @@ public class Generator {
 									tmp.add(n2);
 								} else {
 									list.add(n2);
+									counter++;
 								}
 							}
 						}
@@ -217,7 +225,7 @@ public class Generator {
 	 * Function that generates G generation.
 	 * @param g
 	 */
-	public static void generation(int g) {
+	public static void generation() {
 		addToTable(constructers);
 		int start =  0;
 		while (true) {

@@ -61,7 +61,8 @@ public class PrintUtils {
 	public static String ArbresToDot(ArrayList<Node> list, String graphName) {
 		String res = "";
 		ArrayList<Node> tmp = labelNode(list, 0);
-		res = "digraph " + graphName + "{  \n";
+		res = "graph " + graphName + "{  \n";
+		res += "node [shape=point] \n";
 		for (int i = 0; i < tmp.size(); i++) {
 			
 			res += tmp.get(i).toDot();
@@ -73,7 +74,7 @@ public class PrintUtils {
 	public static String ArbreToDot(Node n, String graphName) {
 		Node labeled = labelNode(n, 0);
 		String res = null;
-		res = "digraph " + graphName + "{  \n";
+		res = "graph " + graphName + "{  \n";
 		res += labeled.toDot();
 		res += "\n }";
 		return res;

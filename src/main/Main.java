@@ -24,15 +24,16 @@ public class Main {
 		if(Config.help)
 			cmd.usage();
 		else
-			if (new File(Config.file).exists()) {
+			if (new File(Config.file).exists() && Config.file.contains(".spec")) {
 				System.out.println("File := " + Config.file);
 				Parser.readFile(Config.file);
 				Generator.preperation();
 				
-				Generator.generation(Config.size);
+				Generator.generation();
 				Generator.termination();
 				PrintUtils.toFile();
 				Stat.writeStat();
+				
 				
 			
 				
