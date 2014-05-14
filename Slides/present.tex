@@ -1,6 +1,6 @@
 \documentclass{beamer}
 
-\usetheme{Warsaw}
+\usetheme{Madrid}
 
 \usepackage[utf8]{inputenc}
 \usepackage[frenchb]{babel}
@@ -9,20 +9,26 @@
 \usepackage{hyperref}
 \usepackage{comment} 
 \usepackage{graphicx}
-\usepackage[linesnumbered]{algorithm2e}
+\usepackage[french]{algorithm2e}
+\usepackage{alltt}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
 
 \pdfcompresslevel0
+%%\renewcommand{\algorithmicforall}{\textbf{for each}}
 
 \usepackage{color}
-
-\addtobeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber
-
-\hspace{10em}\\}
-
 \usepackage{listings}
+
+%% \addtobeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber}
+  %% \hspace{10em}\\}
+
+%% \addtobeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber}
+
+\begin{document}
+
+\setbeamertemplate{navigation symbols}{}
 
 \title{Programmation générique basée sur les classes combinatoires}
 \author{Marwan Ghanem - Charles Huyghues-Despointes}
@@ -33,10 +39,10 @@
 {%
   \leavevmode%
   \hbox{
-    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \begin{beamercolorbox}[wd=.48\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.1cm plus1fil,rightskip=.1cm]{author in head/foot}%
     \usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
   \end{beamercolorbox}%
-  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.1cm,rightskip=.1cm plus1fil]{}%
     \usebeamerfont{title in head/foot}\insertshorttitle%
   \end{beamercolorbox}}%
   \vskip0pt%
@@ -44,21 +50,18 @@
 
 \beamertemplatenavigationsymbolsempty
 
-
-\begin{document}
-
 \maketitle
 
 
 
 
 \begin{frame}{Objectif}
-
 \begin{itemize}
-\item Spécifier les classes combinatoires simples
-\item Représenter les classes ( structure arborescente )
+\item Definir un grammaire pour decrire les classe combinatoire.
+\item Enrichir l'expressivité du grammaire (can we say it).
+\item Représenter les classes ( structure arborescente ).
 %%\item faire un lien entre les grammaires génératives et l'analyse combinatoire
-\item Enumérer les objets par taille
+\item Enumérer les objets par taille.
 \end{itemize}
 
 \end{frame}
@@ -68,159 +71,199 @@
 
 
 \begin{frame}{Rappel de combinatoire analytique}
-\begin{definition}
-\emph{Classe combinatoire :} \\
+\begin{block}{Classe combinatoire}
 Ensemble fini tel que : \\
 \begin{itemize}
-\item on a une fonction taille sur ses éléments
-\item la taille d'un élément est positive et finie
+\item  On associe à chaque élément un nombre : sa taille.
+\item La taille d'un élément est positive et finie.
 \end{itemize}
 
 On appellera Z la classe contenant un seul élément de taille 1.
-\end{definition}
-\begin{block}{Exemple : les arbres binaires}
-\begin{itemize}
-\item $B = Z + Z \times B \times B$ \\
-Z sert à dénombrer,
-ici on dénombre les feuilles, mais aussi les noeuds internes
+\end{block}
+\begin{exampleblock}{Les arbres binaires}
+$\mathcal{B} = \mathcal{Z} + \mathcal{Z} \times \mathcal{B} \times \mathcal{B}$ \\
+%%$\mathcal{Z}$ sert à dénombrer,ici on dénombre les feuilles, mais aussi les noeuds internes
+Un arbre binaire est soit une feuille $\mathcal{Z}$ soit une un noeud avec deux arbres binaires ( $\mathcal{Z} \times \mathcal{B} \times \mathcal{B}$).
 %%\item $ B = Leaf * <1> + B * B * <1> $\\
 %%Séparation de ce qu'on compte et du terminal Leaf
-\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+
+
+\begin{frame}{Vers un encodage des classes combinatoires }
+Trouver une grammaire simple pour encoder les classes combinatoire. \newline
+\begin{block}{Classe combinatoire}
+\center
+$\mathcal{M} = \mathcal{Z} + \mathcal{Z} \times \mathcal{M} \times \mathcal{M} + \mathcal{Z} \times \mathcal{M}$ \\  %%je modifie ici on avait mis * a place de times
+\end{block}
+\vspace{0.5cm}
+\begin{block}{Notre grammaire}
+\begin{alltt}
+\center
+M ::= Leaf * <1> + M * M * <1> + M * <1>;
+\end{alltt}
 \end{block}
 \end{frame}
 
 
 
 
-
-\begin{comment}
-
-\begin{frame}{Rappel d'analyse combinatoire}
-
-Operations usuelles
-\begin{itemize}
-\item Union disjointe ( $C + B$ )
-\item Produit cartésien ( $C \times B$ )
-\item Séquence ( $Seq(C)$ )
-\item MSet ( $MSet(C)$ )
-\item PSet ( $PSet(C)$ )
-\item Cycle ( $Cyc(C)$ )
-\end{itemize}
-%%%\medskip
-%%\begin{figure}[h]
-%%  \centering
-%%  \includegraphics[scale=0.6]{schemaOjacare.png}
-%%  \caption{La génération de code d'O'Jacaré}
-%%\end{figure}
-
-\end{frame}
-
-\end{comment}
+\begin{frame}{Vers un encodage des classes combinatoires NOT SURE OF THE TITLE}
 
 
+\begin{block}{l’associativite <-1>}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.1]{1.png}
+  $\Rightarrow$
+  \includegraphics[scale=0.1]{2.png}
+\end{figure}
 
-\begin{frame}{Vers un encodage des classes combinatoires }
-Trouver une grammaire simple pour encoder les classes combinatoire. \newline
-\begin{itemize}
-\item
-\begin{tabbing}
-\textbf{Classe combinatoire :} \\
-\hspace{0.5cm} \= \kill
-\> M = Z + Z $\times$ M $\times$ M + Z $\times$ M \\  %%je modifie ici on avait mis * a place de times
-\end{tabbing}
+\end{block}
+\begin{block}{Expansion du Seq}
+\begin{alltt}
+B ::= Leaf * <1> + SEQ(B) * <1> ; \\
+\end{alltt}
+\vspace{0.2cm}
+$\Rightarrow$
+\begin{minipage}{0.7\textwidth}
+\begin{alltt}
+B ::= Leaf * <1> + D * <1>; \\
+D ::= B * <0> + D * B <-1>;
+\end{alltt}
+\end{minipage}
+\end{block}
 
-
-\item
-\begin{tabbing}
-\textbf{Notre Grammaire :} \\
-\hspace{0.5cm} \= \kill
-\> M ::= Leaf * <1> + M * M * <1> + M * <1>; \\
-\end{tabbing}
-\end{itemize} 
-
+%%\begin{itemize}
+%%\item le produit commutatif
+%%\item l'associativité ( < -1 > )
+%%\end{itemize}
 \end{frame}
 
 
 
+\begin{frame}{Vers un encodage des classes combinatoires NOT SURE OF THE TITLE}
 
-\begin{comment}
 
+\begin{block}{Produit commutatif}
+not sure what to say ?
 
-\begin{frame}{Vers un encodage des classe combinatoires}
-  
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\emph{Nom} & \emph{Analyse combinatoire} & \emph{Notre grammaire} \\
-\hline\hline
-Union disjointe & a + b & a + b * <0>\\\hline
-Produit cartésion & a $\times$ b & a * b * <0>\\\hline
-Séquence & Seq( a ) & SEQ( a ) * <0> \\\hline
-MSet & MSet( a )  & SET( a ) * <0> \\\hline
-Produit commutatif & a \& b & a \& b \\\hline
-Augment de taille & a $\times Z^{n}$ & a * <n> \\\hline
-PSet  & PSet( a )  & $\times$ \\\hline
-Cycle  & Set( a )  & $\times$ \\\hline
-\end{tabular} 
-
+\end{block}
+\begin{block}{Expansion du Seq}
+\begin{alltt}
+B ::= Leaf * <1> + SET(B) * <1> ; \\
+\end{alltt}
+\vspace{0.2cm}
+$\Rightarrow$
+\begin{minipage}{0.7\textwidth}
+\begin{alltt}
+B ::= Leaf * <1> + D * <1>; \\
+D::=B * <0> + B \& D * <-1>;
+\end{alltt}
+\end{minipage}
+\end{block}
 \end{frame}
 
-
-
-
-
-\begin{frame}{Vers un encodage des classes combinatoires}
-Des nouveautés introduites :
-\begin{itemize}
-\item le produit commutatif
-\item l'associativité ( < -1 > )
-\end{itemize}
-$\rightarrow$ la simplification du MSet et du Seq
-\end{frame}
-
-\end{comment}
-
-
-\begin{frame}{Algorithme de Generation}
-  \scalebox{0.8}[0.65]{
-  \begin{algorithm}[H]
-  %%\algsetup{linenosize=\tiny}
-   \KwResult{Genere tous les arbres de le taille demande}
-   addToTable(constructers)\;
-   start = 0\;
-   \While{true}{
-   List newList\;
-   List list = mainList.get(start)\;
-   taille = list.length\;
-   i = 0\;
-   sort(list)\;
-   \While{i < taille}{
-    Node tmp = list.get(i)\;
-    taille = tmp.getFils().length\;
-    \For{$j\leftarrow 0$ \KwTo $taille$}{
-      \For{$j\leftarrow 0$ \KwTo $constructers.length$}{
-       ArrayList <Node> t = tmp.AddLevel(constructers.get(z))\;
-       addList(t, newList)\;    
+\begin{frame}[fragile]{Algorithme I}
+\begin{algorithm}[H]
+  \KwIn{Grammaire deja parser et expansé (Composant)}
+  \KwResult{Renvoie completeur}
+  \ForAll{Composant}{
+    \eIf{feuille de meme type exisit}{
+       remplace le non terminaux par le feuille
+    }{
+     \eIf{Regle de meme type}{
+      traite la regle.\\
+      remplace le non terminaux par les arbres de cette regle.
+      }{
+        remplace le non terminaux par feuille non remplacable
       }
     }
+  }
+\end{algorithm}
+\end{frame}
+  %% \scalebox{0.8}[0.65]{
+  %% \begin{algorithm}[H]
+  %%  \KwResult{Genere tous les arbres de le taille demande}
+  %%  addToTable(constructers)\;
+  %%  start = 0\;
+  %%  \While{true}{
+  %%  List newList\;
+  %%  List list = mainList.get(start)\;
+  %%  taille = list.length\;
+  %%  i = 0\;
+  %%  sort(list)\;
+  %%  \While{i < taille}{
+  %%   Node tmp = list.get(i)\;
+  %%   taille = tmp.getFils().length\;
+  %%   \For{$j\leftarrow 0$ \KwTo $taille$}{
+  %%     \For{$z\leftarrow 0$ \KwTo $constructers.length$}{
+  %%      ArrayList <Node> t = tmp.AddLevel(constructers.get(z))\;
+  %%      addList(t, newList)\;    
+  %%     }
+  %%   }
+  %%   }
+  %%   \eIf{newList.length == 0}{
+  %%     break
+  %%   }{
+  %%   start++\;
+  %%  }
+  %% }
+  %% \end{algorithm}
+  %% }
+%   \begin{verbatim}
+% Entrée : une grammaire 
+% Sortie : les constructeurs (noms non-terminaux)
+
+% pour chaque SEQ et SET dans la grammaire
+%   on fait l'expansion
+
+% pour chaque nom non-terminal
+%   on créé un nouveau nom terminal
+
+% on renvoie tous les noms terminaux
+% \end{verbatim}
+
+% \begin{verbatim}
+% Entrée :
+% Sortie :
+
+% On commence part une feuille
+% on parcourt l'arbre, pour chaque feuille :
+%   on complète la feuille
+%   (2 cas + ou &)
+
+% étape de rejet
+% \end{verbatim}
+
+\begin{frame}[fragile]{Algorithme II}
+\begin{algorithm}[H]
+  \KwIn{Liste de Completeur et la taille demande}
+  \KwResult{Renvoie liste des arbres}
+  \While{True}{
+    \ForAll{Arbre de génération courant}{
+      remplace une de ses feuille par un completeur\\
+      \eIf{nouveau Arbre de taille  taille demande}{
+         ajouter dans un nouveau génération
+      }{rejeter l'arbre}
     }
-    \eIf{$newList.length$ \eq $0$}{
-      break
+    \eIf{nouveau génération est vide}{
+      sortir du boucle
     }{
-    start++\;
-   }
-  }
-  \end{algorithm}
-  }
+      continue
+    }
+    }
+\end{algorithm}
 \end{frame}
 
-\begin{frame}{Derollement d'algorithme}
-\begin{tabbing}
+\begin{frame}{Exemple}
 \textbf{Grammaire :} \\
-\hspace{0.5cm} \= \kill
-\hspace{0.5cm} 
-\> M ::= Leaf * <1> + M * <1> + M * M * <1>; \\
-\end{tabbing}
-\textbf{Completers :} \\
+
+\begin{alltt}
+\hspace{10 mm} M::= Leaf * <1> + M * M * <1> + M * <1>;
+\end{alltt}
+\textbf{Completeur :} \\
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.2]{const.png}
@@ -228,15 +271,15 @@ $\rightarrow$ la simplification du MSet et du Seq
 \end{frame}
 
 
-\begin{frame}{Derollement d'algorithme II}
-\textbf{Generation 1:}\\
+\begin{frame}{Exemple}
+\textbf{Génération 1:}\\
 \begin{itemize}
-\item  Avec Arbre unaire
+\item  Avec arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen1-1.png}
 \end{figure}
-\item Avec Arbre binare
+\item Avec arbre binaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen1-2.png}
@@ -246,15 +289,15 @@ $\rightarrow$ la simplification du MSet et du Seq
 
 
 
-\begin{frame}{Derollement d'algorithme III}
-\textbf{Generation 2:}\\
+\begin{frame}{Exemple}
+\textbf{Génération 2:}\\
 \begin{itemize}
-\item  Avec Arbre unaire
+\item  Avec arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen2-1.png}
 \end{figure}
-\item Avec Arbre binare
+\item Avec arbre binaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen2-2.png}
@@ -263,84 +306,96 @@ $\rightarrow$ la simplification du MSet et du Seq
 \end{frame}
 
 
-\begin{frame}{Derollement d'algorithme IV}
-\textbf{Generation 3:}\\
+\begin{frame}{Exemple}
+\textbf{Génération 3:}\\
 \begin{itemize}
-\item  Avec Arbre unaire
+\item  Avec arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen3-1.png}
 \end{figure}
 \end{itemize}
-\text{Nombre d'arbre trouve au fin : 9}
+\text{Nombre des arbres trouve au final : 9}
 \end{frame}
 
 
 
 \begin{frame}{Exemple: Partition et compostion d'entiers}
-\begin{tabbing}
-\hspace{1cm} \= \kill
-\> \textbf{Composition et partition de 4}\\
-\hspace{5cm} \= \kill
-Composition \> Partition \\ 
-
-$ 1 + 1 + 1 + 1 $ \> $ 1 +1 +1 +1 $\\
-$ 1 + 1 + 2 $ \> $ 1 + 1 + 2 $\\
-$ 1 + 2 + 1 $ \\
-$ 2 + 1 + 1 $ \\
-$ 2 + 2 $ \> $ 2 + 2 $ \\
-$ 1 + 3 $ \> $ 1 + 3 $\\
-$ 3 + 1 $ \\
-$ 4 $ \> $ 4 $\\
-\end{tabbing}
+\begin{center}
+\textbf{Composition et partition de 4} \\
+\vspace{0.5cm}
+\scalebox{1.2}{
+\begin{tabular}{| c || c |}
+\hline
+Composition & Partation \\
+\hline
+1 + 1 + 1 + 1 & 1 + 1 + 1 + 1 \\ \hline
+1 + 1 + 2 & 1 + 1 + 2 \\ \hline
+1 + 2 +1 &   \\ \hline
+2 + 1 + 1 & \\ \hline
+2 + 2 & 2 + 2 \\ \hline
+1 + 3 & 1 + 3 \\ \hline
+3 + 1 & \\ \hline
+4 & 4 \\ \hline
+\end{tabular}
+}
+\end{center}
 \end{frame}
 
-\begin{frame}{Exemple: Partition et composition d'entiers}
-\textbf{Composition :}\\
-\begin{itemize}
-\item
-\begin{tabbing}
-Classe combinatoire : \\
-\hspace{0.5cm} \= \kill
-\> C = Seq(Seq$_{>0}$(Z)) \\
-\end{tabbing}
-\item
-\begin{tabbing}
-Notre Grammaire : \\
-\hspace{0.5cm} \= \kill
-\hspace{0.5cm} 
-\> P ::= Leaf * <1> + SEQ(E) * <1>; \\
-\> E ::= Leaf * <1> + SEQ(E) * <-1>; \\
-\end{tabbing}
-\end{itemize} 
-\textbf{Partition :}
-\begin{itemize}
-\item
-\begin{tabbing}
-Classe combinatoire : \\
-\hspace{0.5cm} \= \kill
-\> C = Set(Seq$_{>0}$(Z)) \\
-\end{tabbing}
-\item
-\begin{tabbing}
-Notre Grammaire : \\
-\hspace{0.5cm} \= \kill
-\hspace{0.5cm} 
-\> P ::= Leaf * <1> + SET(E) * <1>; \\
-\> E ::= Leaf * <1> + SEQ(E) * <-1>; \\
-\end{tabbing}
-\end{itemize} 
-\end{frame}
 
 \begin{frame}{Exemple: Partition et composition d'entiers}
-ARBRES DE LA PARTITION DE 4
+
+\begin{block}{Composition :}
+\begin{itemize}
+\item Classe combinatoire :\\
+\begin{alltt}
+\hspace{10 mm} C = Seq(Seq$_{>0}$(Z)) \\
+\end{alltt}
+\item Notre grammaire : \\
+\begin{alltt}
+\hspace{10 mm} P ::= Leaf * <1> + SEQ(E) * <1>; \\
+\hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+\end{alltt}
+\end{itemize} 
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{Exemple: Partition et composition d'entiers}
+
+\begin{block}{Partition :}
+\begin{itemize}
+\item Classe combinatoire :\\
+\begin{alltt}
+\hspace{10 mm} C = Set(Seq$_{>0}$(Z)) \\
+\end{alltt}
+\item Notre grammaire : \\
+\begin{alltt}
+\hspace{10 mm} P ::= Leaf * <1> + SET(E) * <1>; \\
+\hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+\end{alltt}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Exemple: Partition et composition d'entiers}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.25]{partition4.png}
+  \caption{Arbres des partitions de 4}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Bilan}
 \begin{itemize}
-\item Prise en charge des opérateurs d'union, produit, séquence et multiSet
-\item Trouver un truc à dire
-\item Lien entre la combinatoire analytique et les grammaires génératives
+\item Mise au point d'un langage de grammaire spécifique aux classes combinatoires.
+\item Prise en charge des opérateurs d'union, produit, séquence et multi-ensemble.
+\item Implémentation en Java ($\sim$ 3800 ligne). \\
+  \footnotesize{\alltt{http://github.com/MarwanG/PSTL}}
+\normalsize
+\item Lien entre la combinatoire analytique et les grammaires génératives.
 \end{itemize}
 \end{frame}
 
@@ -348,30 +403,26 @@ ARBRES DE LA PARTITION DE 4
 
 \begin{frame}{Et après \ldots}
 \begin{itemize}
-\item extension de la grammaire : PowerSet, Cycle,...
-\item Génération automatique de code
+\item Extension de la grammaire : PowerSet, Cycle, ... .
+\item Génération automatique de code (fold, pattern matching...).
 \item Problème de reconnaissance de forme.
+\item Détection de grammaire ambigüe.
 \end{itemize}
 \end{frame}
-%% \begin{frame}{Bibliographie}
+\begin{frame}{Bibliographie}
   
-%%   \begin{thebibliography}{9}
-%%   \bibitem{amato2013localizing}
-%%     Amato, Gianluca and Scozzari, Francesca,
-%%     \emph{Localizing widening and narrowing}.
-%%     Static Analysis, Springer.
-%%     pages 25--42,
-%%     2013.
+  \begin{thebibliography}{9}
+  \bibitem{Analytic}
+    Philippe Flajolet et Robert Sedgewick
+    \emph{ Analytic Combinatorics}.
 
-%%   \bibitem{halbwachs2012decreasing}
-%%     Halbwachs, Nicolas and Henry, Julien,
-%%     \emph{When the decreasing sequence fails}.
-%%     Static Analysis, Springer.
-%%     pages 198--213,
-%%     2012.
-%%   \end{thebibliography}
+  \bibitem{Analys}
+    Philippe Flajolet et Robert Sedgewick
+    \emph{An Introduction to the Analysis of Algorithms}.
 
-%% \end{frame}
+  \end{thebibliography}
+
+\end{frame}
 
 \end{document}
 

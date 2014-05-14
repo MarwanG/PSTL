@@ -77,20 +77,20 @@ public class Generator {
 					n.addFils(ToolNode.clone(leaf.get(i)));
 					list.add(n);
 				}else{
-					//if(c instanceof SETComposant){
-					//	System.out.println("here");
-					//	SETNode n = new SETNode(type, -1);
-					//	n.addFils(ToolNode.clone(leaf.get(i)));
-					//	list.add(n);
-					//}else{
+					if(c instanceof SETComposant){
+						System.out.println("here");
+						SETNode n = new SETNode(type, -1);
+						n.addFils(ToolNode.clone(leaf.get(i)));
+						list.add(n);
+					}else{
 						Node n = new Node(type, c.getWeight());
 						n.addFils(ToolNode.clone(leaf.get(i)));
 						list.add(n);
-					//}			
+					}			
 				}
 			}
 		}
-			if(!found){
+		if(!found){
 			if (Config.labels.contains(son)) {
 					test(son);												//parcours sur l'appel recursive dans le liste donc c'est pas le piene de test.
 					for(int i1 = 0 ; i1 < mainList.get(0).size() ; i1++){
@@ -110,15 +110,15 @@ public class Generator {
 				}else if (son.equals("Leaf")){
 					for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 						if(leaf.get(i2).getType().equals(type)){
-						//	if(c instanceof SETComposant){
-						//		SETNode n = new SETNode(type, -1);
-					//			n.addFils(new Node("non",leaf.get(i2).getWeight()));
-					//			list.add(n);
-					//		}else{
+							if(c instanceof SETComposant){
+								SETNode n = new SETNode(type, -1);
+								n.addFils(new Node("non",leaf.get(i2).getWeight()));
+								list.add(n);
+							}else{
 								Node n = new Node(type, c.getWeight());
 								n.addFils(new Node("non",leaf.get(i2).getWeight()));
 								list.add(n);
-							//}
+							}
 						}
 					}
 					
@@ -179,11 +179,11 @@ public class Generator {
 						for(int i2 = 0 ; i2 < leaf.size() ; i2++){
 							if(leaf.get(i2).getType().equals(type)){
 								Node n2;
-								//if(c instanceof SETComposant){
+								if(c instanceof SETComposant){
 									n2 = ToolNode.clone(n);
-							//	}else{
-							//		n2 =  ToolNode.clone(n);
-							//	}
+								}else{
+									n2 =  ToolNode.clone(n);
+								}
 								n2.addFils(new Node("non",leaf.get(i2).getWeight()));
 								list.add(n2);
 								if (j == sons.size() - 1) {

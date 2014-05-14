@@ -1,0 +1,18 @@
+\frametitle{Algorithme II}
+\begin{algorithm}[H]
+  \KwIn{Liste de Completeur et la taille demande}
+  \KwResult{Renvoie liste des arbres}
+  \While{True}{
+    \ForAll{Arbre de génération courant}{
+      remplace une de ses feuille par un completeur\\
+      \eIf{nouveau Arbre de taille  taille demande}{
+         ajouter dans un nouveau génération
+      }{rejeter l'arbre}
+    }
+    \eIf{nouveau génération est vide}{
+      sortir du boucle
+    }{
+      continue
+    }
+    }
+\end{algorithm}
