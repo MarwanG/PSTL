@@ -7,8 +7,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
-
+\usepackage{comment} 
 \usepackage{graphicx}
+\usepackage[linesnumbered]{algorithm2e}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
@@ -24,7 +25,7 @@
 \usepackage{listings}
 
 \title{Programmation générique basée sur les classes combinatoires}
-\author{Marwan Ghanem  Charles Huyghues-Despointes}
+\author{Marwan Ghanem - Charles Huyghues-Despointes}
 \date{\today}
 
 % slides number
@@ -55,7 +56,8 @@
 \begin{frame}{Objectif}
 
 \begin{itemize}
-\item faire un lien entre les grammaires génératives et l'analyse combinatoire
+\item Numeration des arbres de taille demande
+%%\item faire un lien entre les grammaires génératives et l'analyse combinatoire
 \item décrire récursivement des structures discrètes arborescentes
 \end{itemize}
 
@@ -63,26 +65,35 @@
 
 
 
-\begin{frame}{Rappel d'analyse combinatoire.}
-\emph{Definition:} \newline
-Nous appellerons classe combinatoire ou simplement classe un ensemble fini ou dénombrable
-muni d'une fonction de taille satisfaisant les conditions suivantes :
+
+
+\begin{frame}{Rappel de combinatoire analytique}
+\begin{definition}
+\emph{Classe combinatoire :} \\
+Ensemble fini tel que : \\
 \begin{itemize}
-\item la taille de tout élèment est positive ou nulle
-\item pour toute taille donnée, le nombre d'élèment de cette taille est fini
+\item on a une fonction taille sur ses éléments
+\item la taille d'un élément est positive et finie
 \end{itemize}
 
-soit C une classe, la taille d'un élèment c $\in$  C se notera |c|, de plus on notera aussi Cn le sousEensemble
-de C des élèments de taille n.
-yn dé(nit de plus la classe atomique Z contenant un unique élement de taille 1.
-
-
+On appellera Z la classe contenant un seul élément de taille 1.
+\end{definition}
+\begin{block}{Exemple : les arbres binaires}
+\begin{itemize}
+\item $B = Z + Z \times B \times B$ \\
+Z sert à dénombrer,
+ici on dénombre les feuilles, mais aussi les noeuds internes
+%%\item $ B = Leaf * <1> + B * B * <1> $\\
+%%Séparation de ce qu'on compte et du terminal Leaf
+\end{itemize}
+\end{block}
 \end{frame}
 
 
 
 
 
+\begin{comment}
 
 \begin{frame}{Rappel d'analyse combinatoire}
 
@@ -104,7 +115,7 @@ Operations usuelles
 
 \end{frame}
 
-
+\end{comment}
 
 
 
@@ -115,7 +126,7 @@ Trouver une grammaire simple pour encoder les classes combinatoire. \newline
 \begin{tabbing}
 \textbf{Classe combinatoire :} \\
 \hspace{0.5cm} \= \kill
-\> BinNode = Z + Z $\times$ BinNode $\times$ BinNode \\  %%je modifie ici on avait mis * a place de times
+\> M = Z + Z $\times$ M $\times$ M + Z $\times$ M \\  %%je modifie ici on avait mis * a place de times
 \end{tabbing}
 
 
@@ -123,7 +134,7 @@ Trouver une grammaire simple pour encoder les classes combinatoire. \newline
 \begin{tabbing}
 \textbf{Notre Grammaire :} \\
 \hspace{0.5cm} \= \kill
-\> BinNode ::= Leaf * <1> + BinNode * BinNode * <1>; \\
+\> M ::= Leaf * <1> + M * M * <1> + M * <1>; \\
 \end{tabbing}
 \end{itemize} 
 
@@ -132,7 +143,7 @@ Trouver une grammaire simple pour encoder les classes combinatoire. \newline
 
 
 
-
+\begin{comment}
 
 
 \begin{frame}{Vers un encodage des classe combinatoires}
@@ -166,45 +177,104 @@ Des nouveautés introduites :
 $\rightarrow$ la simplification du MSet et du Seq
 \end{frame}
 
+\end{comment}
 
-\begin{frame}{Exemple : Les arbres de Motzkin}
-Arbres de Motzkin : arbres contenant des noeuds binaires ou unaires :
-\begin{itemize}
-\item
+
+\begin{frame}{Algorithme de Generation}
+  \scalebox{0.8}[0.65]{
+  \begin{algorithm}[H]
+  %%\algsetup{linenosize=\tiny}
+   \KwResult{Genere tous les arbres de le taille demande}
+   addToTable(constructers)\;
+   start = 0\;
+   \While{true}{
+   List newList\;
+   List list = mainList.get(start)\;
+   taille = list.length\;
+   i = 0\;
+   sort(list)\;
+   \While{i < taille}{
+    Node tmp = list.get(i)\;
+    taille = tmp.getFils().length\;
+    \For{$j\leftarrow 0$ \KwTo $taille$}{
+      \For{$j\leftarrow 0$ \KwTo $constructers.length$}{
+       ArrayList <Node> t = tmp.AddLevel(constructers.get(z))\;
+       addList(t, newList)\;    
+      }
+    }
+    }
+    \eIf{$newList.length$ \eq $0$}{
+      break
+    }{
+    start++\;
+   }
+  }
+  \end{algorithm}
+  }
+\end{frame}
+
+\begin{frame}{Derollement d'algorithme}
 \begin{tabbing}
-\textbf{Classe combinatoire :} \\
-\hspace{0.5cm} \= \kill
-\> M = Z + Z $\times$ M + Z $\times$ M $\times$ M \\
-\end{tabbing}
-\item
-\begin{tabbing}
-\textbf{Notre Grammaire :} \\
+\textbf{Grammaire :} \\
 \hspace{0.5cm} \= \kill
 \hspace{0.5cm} 
 \> M ::= Leaf * <1> + M * <1> + M * M * <1>; \\
 \end{tabbing}
-\end{itemize} 
-\end{frame}
-
-
-\begin{frame}{Exemple : les Arbres de Motzkin}
+\textbf{Completers :} \\
 \begin{figure}[h]
-  \centering
-  \includegraphics[scale=0.35]{mtzkin1.png}
-  \caption{Arbre de taille 5}
+\centering
+\includegraphics[scale=0.2]{const.png}
 \end{figure}
 \end{frame}
 
 
-
-\begin{frame}{Exemple : les Arbres de Motzkin}
+\begin{frame}{Derollement d'algorithme II}
+\textbf{Generation 1:}\\
+\begin{itemize}
+\item  Avec Arbre unaire
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.18]{mtzkinall.png}
-  \caption{Arbres de Mtzkin}
+  \includegraphics[scale=0.17]{gen1-1.png}
 \end{figure}
-Nombres de Moltkin : 1, 1, 2, 4, 9, 21, 51, 127\ldots
+\item Avec Arbre binare
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.17]{gen1-2.png}
+\end{figure}
+\end{itemize}
 \end{frame}
+
+
+
+\begin{frame}{Derollement d'algorithme III}
+\textbf{Generation 2:}\\
+\begin{itemize}
+\item  Avec Arbre unaire
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.17]{gen2-1.png}
+\end{figure}
+\item Avec Arbre binare
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.17]{gen2-2.png}
+\end{figure}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Derollement d'algorithme IV}
+\textbf{Generation 3:}\\
+\begin{itemize}
+\item  Avec Arbre unaire
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.17]{gen3-1.png}
+\end{figure}
+\end{itemize}
+\text{Nombre d'arbre trouve au fin : 9}
+\end{frame}
+
 
 
 \begin{frame}{Exemple: Partition et compostion d'entiers}
@@ -269,8 +339,7 @@ ARBRES DE LA PARTITION DE 4
 \begin{frame}{Et après \ldots}
 \begin{itemize}
 \item Génération automatique de code
-\item Comparateur d'Arbre et de Grammaire
-\item Génération aléatoire d'arbre de très grande taille
+\item Probleme de reconnisance de forme.
 \end{itemize}
 \end{frame}
 
