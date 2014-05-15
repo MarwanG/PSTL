@@ -1,16 +1,22 @@
 \frametitle{Algorithme II}
+
+\begin{textblock}{5.5}(9.5,8.7)
+\begin{block}{Algorithme de termination}
+Un 3eme algorithme qui traite les propiétés des opérateurs
+\end{block}
+\end{textblock}
 \begin{algorithm}[H]
-  \KwIn{Liste de Completeur et la taille demande}
+  \KwIn{Liste de Completeurs et la taille demandée}
   \KwResult{Renvoie liste des arbres}
   \While{True}{
-    \ForAll{Arbre de génération courant}{
-      remplace une de ses feuille par un completeur\\
-      \eIf{nouveau Arbre de taille  taille demande}{
-         ajouter dans un nouveau génération
+    \ForAll{Arbre de génération courante}{
+      remplace une de ses feuilles par un completeur\\
+      \eIf{nouveau Arbre de taille demandée }{
+         ajouter dans la nouvelle génération
       }{rejeter l'arbre}
     }
-    \eIf{nouveau génération est vide}{
-      sortir du boucle
+    \eIf{la nouvelle génération est vide}{
+      sortir de la boucle
     }{
       continue
     }

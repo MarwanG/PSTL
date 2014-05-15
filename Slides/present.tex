@@ -11,6 +11,8 @@
 \usepackage{graphicx}
 \usepackage[french]{algorithm2e}
 \usepackage{alltt}
+\usepackage{textpos}
+\usepackage{dot2texi}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows}
@@ -57,11 +59,10 @@
 
 \begin{frame}{Objectif}
 \begin{itemize}
-\item Definir un grammaire pour decrire les classe combinatoire.
-\item Enrichir l'expressivité du grammaire (can we say it).
+\item Définir une grammaire pour décrire les classes combinatoires.
+\item Enrichir l'expressivité de la grammaire.
 \item Représenter les classes ( structure arborescente ).
-%%\item faire un lien entre les grammaires génératives et l'analyse combinatoire
-\item Enumérer les objets par taille.
+\item construire et compter les objets par taille.
 \end{itemize}
 
 \end{frame}
@@ -78,12 +79,12 @@ Ensemble fini tel que : \\
 \item La taille d'un élément est positive et finie.
 \end{itemize}
 
-On appellera Z la classe contenant un seul élément de taille 1.
+On appellera Z l élément atomique de taille 1 contenant un seul élément de taille 1.
 \end{block}
 \begin{exampleblock}{Les arbres binaires}
 $\mathcal{B} = \mathcal{Z} + \mathcal{Z} \times \mathcal{B} \times \mathcal{B}$ \\
 %%$\mathcal{Z}$ sert à dénombrer,ici on dénombre les feuilles, mais aussi les noeuds internes
-Un arbre binaire est soit une feuille $\mathcal{Z}$ soit une un noeud avec deux arbres binaires ( $\mathcal{Z} \times \mathcal{B} \times \mathcal{B}$).
+Un arbre binaire est soit une feuille $\mathcal{Z}$ soit une noeud $\mathcal{Z}$ avec deux arbres binaires attachés au noeud interne( $\mathcal{Z} \times \mathcal{B} \times \mathcal{B}$).
 %%\item $ B = Leaf * <1> + B * B * <1> $\\
 %%Séparation de ce qu'on compte et du terminal Leaf
 \end{exampleblock}
@@ -92,8 +93,8 @@ Un arbre binaire est soit une feuille $\mathcal{Z}$ soit une un noeud avec deux 
 
 
 \begin{frame}{Vers un encodage des classes combinatoires }
-Trouver une grammaire simple pour encoder les classes combinatoire. \newline
-\begin{block}{Classe combinatoire}
+Trouver une grammaire simple pour encoder les classes combinatoires. \newline
+\begin{block}{Classe combinatoire : correspondant aux arbres de Motzkin}
 \center
 $\mathcal{M} = \mathcal{Z} + \mathcal{Z} \times \mathcal{M} \times \mathcal{M} + \mathcal{Z} \times \mathcal{M}$ \\  %%je modifie ici on avait mis * a place de times
 \end{block}
@@ -109,17 +110,15 @@ M ::= Leaf * <1> + M * M * <1> + M * <1>;
 
 
 
-\begin{frame}{Vers un encodage des classes combinatoires NOT SURE OF THE TITLE}
+\begin{frame}{Au-delà des classes combinatoires : les propriétés des oprétateurs}
 
 
-\begin{block}{l’associativite <-1>}
+\begin{block}{l’associativite <-1>. Marques sur certains noeuds, au lieu du poids}
 \begin{figure}[h]
   \centering
-  \includegraphics[scale=0.1]{1.png}
-  $\Rightarrow$
-  \includegraphics[scale=0.1]{2.png}
+  \includegraphics[scale=0.45]{tree1.png}
 \end{figure}
-
+\
 \end{block}
 \begin{block}{Expansion du Seq}
 \begin{alltt}
@@ -143,12 +142,14 @@ D ::= B * <0> + D * B <-1>;
 
 
 
-\begin{frame}{Vers un encodage des classes combinatoires NOT SURE OF THE TITLE}
+\begin{frame}[fragile]{Au-delà des classes combinatoires : les propriétés des oprétateurs}
 
 
 \begin{block}{Produit commutatif}
-not sure what to say ?
-
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.45]{tree2.png}
+\end{figure}
 \end{block}
 \begin{block}{Expansion du Seq}
 \begin{alltt}
@@ -167,17 +168,17 @@ D::=B * <0> + B \& D * <-1>;
 
 \begin{frame}[fragile]{Algorithme I}
 \begin{algorithm}[H]
-  \KwIn{Grammaire deja parser et expansé (Composant)}
+  \KwIn{Grammaire déjà <<parsée>> et <<expanseé>>}
   \KwResult{Renvoie completeur}
   \ForAll{Composant}{
-    \eIf{feuille de meme type exisit}{
-       remplace le non terminaux par le feuille
+    \eIf{feuille de meme type existe}{
+       remplace le non noeud non-terminal par une feuille.
     }{
-     \eIf{Regle de meme type}{
-      traite la regle.\\
-      remplace le non terminaux par les arbres de cette regle.
+     \eIf{Régle de même type}{
+      traite la règle.\\
+      remplace le non noeud non-terminal par les arbres de cette règle.
       }{
-        remplace le non terminaux par feuille non remplacable
+        remplace le non noeud non-terminal par feuille non remplaceable
       }
     }
   }
@@ -239,17 +240,17 @@ D::=B * <0> + B \& D * <-1>;
 
 \begin{frame}[fragile]{Algorithme II}
 \begin{algorithm}[H]
-  \KwIn{Liste de Completeur et la taille demande}
+  \KwIn{Liste de Completeurs et la taille demandée}
   \KwResult{Renvoie liste des arbres}
   \While{True}{
-    \ForAll{Arbre de génération courant}{
-      remplace une de ses feuille par un completeur\\
-      \eIf{nouveau Arbre de taille  taille demande}{
-         ajouter dans un nouveau génération
+    \ForAll{Arbre de génération courante}{
+      remplace une de ses feuilles par un completeur\\
+      \eIf{nouveau Arbre de taille demandée }{
+         ajouter dans la nouvelle génération
       }{rejeter l'arbre}
     }
-    \eIf{nouveau génération est vide}{
-      sortir du boucle
+    \eIf{la nouvelle génération est vide}{
+      sortir de la boucle
     }{
       continue
     }
@@ -257,13 +258,39 @@ D::=B * <0> + B \& D * <-1>;
 \end{algorithm}
 \end{frame}
 
-\begin{frame}{Exemple}
-\textbf{Grammaire :} \\
+\begin{frame}[fragile]{Algorithme II}
+
+\begin{textblock}{5.5}(9.5,8.7)
+\begin{block}{Algorithme de termination}
+Un 3eme algorithme qui traite les propiétés des opérateurs
+\end{block}
+\end{textblock}
+\begin{algorithm}[H]
+  \KwIn{Liste de Completeurs et la taille demandée}
+  \KwResult{Renvoie liste des arbres}
+  \While{True}{
+    \ForAll{Arbre de génération courante}{
+      remplace une de ses feuilles par un completeur\\
+      \eIf{nouveau Arbre de taille demandée }{
+         ajouter dans la nouvelle génération
+      }{rejeter l'arbre}
+    }
+    \eIf{la nouvelle génération est vide}{
+      sortir de la boucle
+    }{
+      continue
+    }
+    }
+\end{algorithm}
+\end{frame}
+
+\begin{frame}{Exemple : arbres de Motzkin}
+\textbf{Grammaire : } \\
 
 \begin{alltt}
 \hspace{10 mm} M::= Leaf * <1> + M * M * <1> + M * <1>;
 \end{alltt}
-\textbf{Completeur :} \\
+\textbf{Completeur : (Génération 0)} \\
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.2]{const.png}
@@ -271,15 +298,15 @@ D::=B * <0> + B \& D * <-1>;
 \end{frame}
 
 
-\begin{frame}{Exemple}
+\begin{frame}{Complétion des géneération}
 \textbf{Génération 1:}\\
 \begin{itemize}
-\item  Avec arbre unaire
+\item  Completeur l'arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen1-1.png}
 \end{figure}
-\item Avec arbre binaire
+\item Completeur l'arbre binaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen1-2.png}
@@ -289,15 +316,15 @@ D::=B * <0> + B \& D * <-1>;
 
 
 
-\begin{frame}{Exemple}
+\begin{frame}{Complétion des géneération}
 \textbf{Génération 2:}\\
 \begin{itemize}
-\item  Avec arbre unaire
+\item  Completeur l'arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen2-1.png}
 \end{figure}
-\item Avec arbre binaire
+\item Completeur l'arbre binaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen2-2.png}
@@ -306,29 +333,30 @@ D::=B * <0> + B \& D * <-1>;
 \end{frame}
 
 
-\begin{frame}{Exemple}
+\begin{frame}{Complétion des géneération}
 \textbf{Génération 3:}\\
 \begin{itemize}
-\item  Avec arbre unaire
+\item  Completeur l'arbre unaire
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.17]{gen3-1.png}
 \end{figure}
 \end{itemize}
-\text{Nombre des arbres trouve au final : 9}
+\text{Au final, il y a 9 arbres de taille 5}
 \end{frame}
 
 
 
 \begin{frame}{Exemple: Partition et compostion d'entiers}
 \begin{center}
-\textbf{Composition et partition de 4} \\
+\textbf{Composition et partition de l’entier 4} \\
 \vspace{0.5cm}
 \scalebox{1.2}{
 \begin{tabular}{| c || c |}
 \hline
-Composition & Partation \\
+Composition & Partition \\
 \hline
+C = Seq(Seq$_{>0}$(Z))  & C = Set(Seq$_{>0}$(Z)) \\ \hline
 1 + 1 + 1 + 1 & 1 + 1 + 1 + 1 \\ \hline
 1 + 1 + 2 & 1 + 1 + 2 \\ \hline
 1 + 2 +1 &   \\ \hline
@@ -343,41 +371,41 @@ Composition & Partation \\
 \end{frame}
 
 
-\begin{frame}{Exemple: Partition et composition d'entiers}
+% \begin{frame}{Exemple: Partition et composition d'entiers}
 
-\begin{block}{Composition :}
-\begin{itemize}
-\item Classe combinatoire :\\
-\begin{alltt}
-\hspace{10 mm} C = Seq(Seq$_{>0}$(Z)) \\
-\end{alltt}
-\item Notre grammaire : \\
-\begin{alltt}
-\hspace{10 mm} P ::= Leaf * <1> + SEQ(E) * <1>; \\
-\hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
-\end{alltt}
-\end{itemize} 
-\end{block}
+% \begin{block}{Composition :}
+% \begin{itemize}
+% \item Classe combinatoire :\\
+% \begin{alltt}
+% \hspace{10 mm} C = Seq(Seq$_{>0}$(Z)) \\
+% \end{alltt}
+% \item Notre grammaire : \\
+% \begin{alltt}
+% \hspace{10 mm} P ::= Leaf * <1> + SEQ(E) * <1>; \\
+% \hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+% \end{alltt}
+% \end{itemize} 
+% \end{block}
 
-\end{frame}
+% \end{frame}
 
 
-\begin{frame}{Exemple: Partition et composition d'entiers}
+% \begin{frame}{Exemple: Partition et composition d'entiers}
 
-\begin{block}{Partition :}
-\begin{itemize}
-\item Classe combinatoire :\\
-\begin{alltt}
-\hspace{10 mm} C = Set(Seq$_{>0}$(Z)) \\
-\end{alltt}
-\item Notre grammaire : \\
-\begin{alltt}
-\hspace{10 mm} P ::= Leaf * <1> + SET(E) * <1>; \\
-\hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
-\end{alltt}
-\end{itemize}
-\end{block}
-\end{frame}
+% \begin{block}{Partition :}
+% \begin{itemize}
+% \item Classe combinatoire :\\
+% \begin{alltt}
+% \hspace{10 mm} C = Set(Seq$_{>0}$(Z)) \\
+% \end{alltt}
+% \item Notre grammaire : \\
+% \begin{alltt}
+% \hspace{10 mm} P ::= Leaf * <1> + SET(E) * <1>; \\
+% \hspace{10 mm} E ::= Leaf * <1> + SEQ(E) * <-1>; \\
+% \end{alltt}
+% \end{itemize}
+% \end{block}
+% \end{frame}
 
 
 \begin{frame}{Exemple: Partition et composition d'entiers}
@@ -392,7 +420,7 @@ Composition & Partation \\
 \begin{itemize}
 \item Mise au point d'un langage de grammaire spécifique aux classes combinatoires.
 \item Prise en charge des opérateurs d'union, produit, séquence et multi-ensemble.
-\item Implémentation en Java ($\sim$ 3800 ligne). \\
+\item Implémentation en Java ($\sim$ 3800 lignes). \\
   \footnotesize{\alltt{http://github.com/MarwanG/PSTL}}
 \normalsize
 \item Lien entre la combinatoire analytique et les grammaires génératives.
@@ -408,10 +436,7 @@ Composition & Partation \\
 \item Problème de reconnaissance de forme.
 \item Détection de grammaire ambigüe.
 \end{itemize}
-\end{frame}
-\begin{frame}{Bibliographie}
-  
-  \begin{thebibliography}{9}
+\begin{thebibliography}{9}
   \bibitem{Analytic}
     Philippe Flajolet et Robert Sedgewick
     \emph{ Analytic Combinatorics}.
@@ -421,7 +446,6 @@ Composition & Partation \\
     \emph{An Introduction to the Analysis of Algorithms}.
 
   \end{thebibliography}
-
 \end{frame}
 
 \end{document}
