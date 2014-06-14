@@ -249,6 +249,7 @@ public class Generator {
 				i++;
 			}
 			mainList.add(newList);
+			System.out.println(PrintUtils.ArbresToDot(newList, "1"));
 			System.out.println(" Nb of Trees Generated : " + newList.size());
 			if(newList.size() == 0){
 				System.out.println("========================================");
